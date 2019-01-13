@@ -22,11 +22,6 @@
   width: 34px;
 }
 
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
-}
 
 .game {
   background-color: #282c34;
@@ -38,3 +33,4 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
