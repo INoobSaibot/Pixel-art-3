@@ -1,7 +1,5 @@
 import React from 'react';
 import './App.css';
-import soundfile from './assets/alert.mp3'
-import Sound from 'react-sound'
 
 const App = () => {
   return(<div>
@@ -19,15 +17,15 @@ class Square extends React.Component {
       background: 'white',
     };
     this.colors = [
+      'black',
+      'orange',
       'red',
       'green',
       'blue',
       'brown',
-      'black',
-      'white',
       'lime',
       'yellow',
-      'orange',
+      'white',
     ];
   }
 
