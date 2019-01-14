@@ -48,20 +48,158 @@ class Square extends React.Component {
     return (
       <button className="square" style={{background: this.state.background}}
       onClick={() => this.changeColor()
-       }>
+       }>{this.state.key}
       </button>
     );
   }
 }
 
 class Board extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  
   renderSquare(i) {
     return <Square value={i} />;
   }
 
   render() {
-    const status = 'Click a pixel to cycle through the colors';
-    //const row = numbers.map((number) => )
+    var out = '';
+    const status = 'Click a pixel to cycle through the colors' + out;
+    const columns = this.props.columns;
+    const Row = columns.map((column) => 
+    <Square key={column.toString()} />
+    );
+
+    return (
+      <div>
+        <div className= 'status'>{status}</div>
+        <div className='board-row'>
+          {Row}
+        </div>
+        
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+
+        <div className='board-row'>
+          {Row}
+        </div>
+      </div>
+    );
+      /*
     return (
       <div>
         <div className="status">{status}</div>
@@ -736,17 +874,20 @@ class Board extends React.Component {
           {this.renderSquare(20)}
         </div>
         
-      </div>
-    );
+      </div> 
+    ); */
   }
 }
+
+const columns = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+const rows = [];
 
 class Game extends React.Component {
   render() {
     return (
       <div className="game">
         <div className="game-board">
-          <Board />
+          <Board columns={columns} />
         </div>
         <div className="game-info">
           <div>{/* status */}</div>
