@@ -32,15 +32,16 @@ class Square extends React.Component {
   changeColor = () =>{
     this.setState({value: this.state.value +1})
 
+    if (this.state.value >= this.colors.length-1){
+      this.setState({value: 0})
+    }
+
     let choice = this.state.value
     let color = this.colors[choice]
 
-    if (this.state.value > this.colors.length){
-      this.setState({value: 0})
-    }
-    else
-      (this.setState({background: color}))
-    
+    this.setState({background: color})
+    //alert(color)
+
   }
 
   render() {
@@ -60,7 +61,7 @@ class Board extends React.Component {
 
   render() {
     const status = 'Click a pixel to cycle through the colors';
-
+    //const row = numbers.map((number) => )
     return (
       <div>
         <div className="status">{status}</div>
