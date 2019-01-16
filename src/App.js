@@ -41,7 +41,8 @@ class Square extends React.Component {
 
     this.setState({background: color})
     //alert(this.props.value)
-    console.log('column ' + this.props.column + 'row ' + this.props.row)
+    console.log('column ' + this.props.column + ' row ' + this.props.row 
+      + " " + color)
 
   }
 
@@ -56,157 +57,146 @@ class Square extends React.Component {
 }
 
 class Board extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   
   renderSquare(i) {
     return <Square value={i} />;
   }
 
+  renderRow(i) {
+    const Row = columns.map((column) =>
+      <Square key={column.toString()} column={column} row={i}/>
+      );
+    
+    return Row;
+  }
+
   render() {
     var out = '';
     const status = 'Click a pixel to cycle through the colors' + out;
-    const columns = this.props.columns;
-    const rows = this.props.rows;
-
-    const Row = columns.map((column) => 
-    <Square key={column.toString()} column={column.toString()} />
-    );
-
-    for(var r in rows) {
-      //console.log(rows[row]);
-
-      for(var c in columns) {
-        console.log(rows[r]+columns[c]);
-      }
-    }
+    //const columns = this.props.columns;
+    //const rows = this.props.rows;
 
     return (
       <div>
         <div className= 'status'>{status}</div>
         <div className='board-row'>
-          {Row}
+          {this.renderRow('a')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('b')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('c')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('d')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('e')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('f')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('g')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('h')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('i')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('j')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('k')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('l')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('m')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('n')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('o')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('p')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('q')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('r')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('s')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('t')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('u')}
         </div>
         
         <div className='board-row'>
-          {Row}
+          {this.renderRow('v')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('w')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('x')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('y')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('z')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('aa')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('bb')}
         </div>
 
         <div className='board-row'>
-          {Row}
+          {this.renderRow('cc')}
         </div>
 
         <div className='board-row'>
-          {Row}
-        </div>
-
-        <div className='board-row'>
-          {Row}
+          {this.renderRow('dd')}
         </div>
 
       </div>
