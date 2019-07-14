@@ -26,7 +26,7 @@ class App extends Component {
     render() {
       const status = 'Draw something nice';
       
-      const grid = this.loopyRenderRow(20,20)
+      const grid = this.loopyRenderRow(30,30)
   
       return (
         <div>
@@ -57,18 +57,6 @@ class App extends Component {
        },
        body: JSON.stringify(item),
      });
-
-    //  const fakeData = [{fake:'data'}, {firstName: 'fooName'}, {name:'thisName'}];
-    //  
-    //  axios.post(URL, {
-    //    topic:'topic',
-    //    data:{
-    //      body:fakeData,
-    //    }
-    //    })
-    //  .then(response => console.log(response))
-
-
     }
 
     loopyRenderRow(r,c){
