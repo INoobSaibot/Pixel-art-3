@@ -1,226 +1,137 @@
-import React from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
+import './index.css';
 import './App.css';
 
-const App = () => {
-  return(<div>
-            <div className="App">Hello Pixel Artist!</div>
-            <Game />
-          </div>
-  );
-};
-
-class Square extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: 0,
-      background: 'white',
-    };
-    this.colors = [
-      'black',
-      'orange',
-      'red',
-      'green',
-      'blue',
-      'brown',
-      'lime',
-      'yellow',
-      'white',
-    ];
+class App extends Component {
+    render() {
+      return (<div>
+                <div className="App">Hello Pixel Artist!</div>
+                  <Game />
+              </div>
+      );
+    }
   }
 
-  changeColor = () =>{
-    this.setState({value: this.state.value +1})
-
-    if (this.state.value >= this.colors.length-1){
-      this.setState({value: 0})
+  class Board extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        'firstName':'foo',
+        'states':[{"foo":"purple"}],
+      
+      }
     }
 
-    let choice = this.state.value
-    let color = this.colors[choice]
-
-    this.setState({background: color})
-    //alert(this.props.value)
-    console.log('column ' + this.props.column + ' row ' + this.props.row 
-      + " " + color)
-
-  }
-
-  render() {
-    return (
-      <button className="square" style={{background: this.state.background}}
-      onClick={() => this.changeColor()
-       }>
-      </button>
-    );
-  }
-}
-
-class Board extends React.Component {
+    render() {
+      const status = 'Draw something nice';
+      
+      const grid = this.loopyRenderRow(20,20)
   
-  renderSquare(i) {
-    return <Square value={i} />;
-  }
-
-  renderRow(i) {
-    const Row = columns.map((column) =>
-      <Square key={column.toString()} column={column} row={i}/>
+      return (
+        <div>
+          <div className="status"></div>
+            {grid}
+        </div>
       );
+    }
+
+    handleClick = (e) =>{
+     let color = this.props.color;
+     let targetState = e.target.value;
+     this.state[targetState]=color;
+     
+     // super silly hack to make state rerender! yay!
+     let arr = this.state.pixels;
+     this.setState({pixels:arr});
+
+     const URL = 'http://localhost:8080/pixels';
+     
+     const item = this.state;
+
+     fetch(URL, {
+       method: 'POST',
+       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(item),
+     });
+
+    //  const fakeData = [{fake:'data'}, {firstName: 'fooName'}, {name:'thisName'}];
+    //  
+    //  axios.post(URL, {
+    //    topic:'topic',
+    //    data:{
+    //      body:fakeData,
+    //    }
+    //    })
+    //  .then(response => console.log(response))
+
+
+    }
+
+    loopyRenderRow(r,c){
+      
+      let handleClick = this.handleClick
+      let grid = []
+      for(let i = 0; i < r; i++) {
+        let children = [];
+        //inner
+        for (let j = 0; j < c; j++) {
+          let target = 'row_'+i+":"+"column_"+j;
+          children.push(<Square background={this.state[target]} row={i} column={j} value={'row_'+i+":"+"column_"+j} handleClick={handleClick} key={i.toString() + "X" + j.toString()} />)
+        }
+        // parent and children
+        grid.push(<div className="board-row" key={i}>{children}</div>)
+      }
+      return grid;
+    }
+  }
+
+
+  
+  class Game extends React.Component {
+    constructor(props) {
+      super(props);
+      let OliversMagenta = 'rgba(255,10,125)';
+      this.colors=`red green orange pink blue yellow purple brown white black gray lightgray cyan khaki aqua darkgray brown indigo teal lime magenta ${OliversMagenta}`.split(" ");
+      this.state = {
+        paintColor:'purple',
+      }
+    }
     
-    return Row;
+    render() {
+      const pallette = this.colors.map((item) => {
+        return (
+                <span className='row'>
+                  <Square value={item} background={item} handleClick={this.handleClick}>{item}</Square>
+                </span>
+        )
+      })
+
+      return (
+        <div className="game">
+        <div className="pallette">{pallette}</div>
+          <div className="game-board">
+            <Board color={this.state.paintColor}/>
+          </div>
+          <div className="game-info">
+          </div>
+        </div>
+      );
+    }
+
+    handleClick = (e) =>{
+      this.setState({paintColor: e.target.value})
+    }
   }
 
-  render() {
-    var out = '';
-    const status = 'Click a pixel to cycle through the colors' + out;
-    //const columns = this.props.columns;
-    //const rows = this.props.rows;
-
-    return (
-      <div>
-        <div className= 'status'>{status}</div>
-        <div className='board-row'>
-          {this.renderRow('a')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('b')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('c')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('d')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('e')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('f')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('g')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('h')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('i')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('j')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('k')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('l')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('m')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('n')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('o')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('p')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('q')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('r')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('s')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('t')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('u')}
-        </div>
-        
-        <div className='board-row'>
-          {this.renderRow('v')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('w')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('x')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('y')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('z')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('aa')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('bb')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('cc')}
-        </div>
-
-        <div className='board-row'>
-          {this.renderRow('dd')}
-        </div>
-
-      </div>
-    );
+function Square(props) {    
+  return (
+        <button className="square" row={props.row} column={props.column} value={props.value} onClick={props.handleClick} style={{background:props.background}}></button>
+      )
   }
-}
-
-const columns = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
-const rows = ['a', 'b', 'c','d','e','f','g','h','i','j','k','l','m','n'];
-
-class Game extends React.Component {
-  render() {
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board columns={columns} rows={rows} />
-        </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
-      </div>
-    );
-  }
-}
-
+  
+//
 export default App;
