@@ -41,11 +41,7 @@ class Board extends Component {
       }
       
       else {
-        let color = !eraserSelected ? this.props.color : '';
-
-        //let targetState = e.target.value;
-        //this.setState({[targetState]:color});
-
+        let color = !eraserSelected ? this.props.color : ''; //paint or eraser
         let pixelData = this.state.pixelData;
         pixelData[row][column] = color;
         this.setState({pixelData:pixelData});
@@ -53,7 +49,7 @@ class Board extends Component {
     }
 
     paintFill = (position) => {
-      alert(this.getNeighbors(position.row,position.column));
+      this.getNeighbors(position.row,position.column);
 
     }
 
