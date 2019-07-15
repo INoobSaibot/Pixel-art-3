@@ -12,8 +12,9 @@ class Board extends Component {
 
     componentDidMount() {
         let gridData = this.loopyRenderRow(30,30).state;
-        
         this.setState({pixelData:gridData});
+
+        this.props.setClearHandler(this.clearBoard);
     }
 
     render() {
@@ -66,6 +67,11 @@ class Board extends Component {
         ]
 
         return arr;
+    }
+
+    clearBoard = () => {
+        let emptyPixelData = this.loopyRenderRow(30,30).state;
+        this.setState({pixelData:emptyPixelData});
     }
 
     loopyRenderRow(r,c){

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //import './App.css';
 import Board from '../Board/Board.js'
 
-class Game extends React.Component {
+class Game extends Component {
     constructor(props) {
       super(props);
       let OliversMagenta = 'rgba(255,10,125)';
@@ -12,13 +12,14 @@ class Game extends React.Component {
         paintColor:'purple',
         eraserSelected: false,
         fillButtonSelected: false,
-
+        clearPixels: false,
       }
     }
     
     render() {
       let eraser = <this.EraseButton handleClick={this.selectEraser} value={'eraser'} selected={this.state.eraserSelected}/>;
-      let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected}/>
+      let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected}/>;
+      let clearButton = <this.ClearButton/>;
       
       const pallette = this.colors.map((item) => {
         return (
@@ -37,11 +38,13 @@ class Game extends React.Component {
               <div className="">
                 {eraser}
                 {fillButton}
+                {clearButton}
               </div>
             
             <div className="column"> 
-            <Board pixels={this.state} color={this.state.paintColor} 
-                eraser={this.state.eraserSelected} fillButton={this.state.fillButtonSelected}/>
+            <Board color={this.state.paintColor} eraser={this.state.eraserSelected} 
+                fillButton={this.state.fillButtonSelected} gameState={this.state}
+                setClearHandler={this.setClearClickHandler}/>
             </div>
 
           </div>
@@ -84,6 +87,26 @@ class Game extends React.Component {
 
     selectFillButton = (e) => {
       this.setState({fillButtonSelected: !this.state.fillButtonSelected});
+    }
+
+    ClearButton = (props) => {
+        let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
+        let iconStyle = {fontSize:'36px', width:'38px'};
+        
+        return (
+        <button className='btn row' style={style} onClick={this.clearClick} value={props.value}>
+          <i className="fa fa-bomb" style={iconStyle}></i>
+        </button>
+      )
+    }
+
+    clearClick = () => {
+        alert('boom');
+        this.handleClearClick();
+    }
+
+    setClearClickHandler = (handlerFromBoard) => {
+        this.handleClearClick = handlerFromBoard;
     }
 
   }
