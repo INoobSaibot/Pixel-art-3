@@ -30,6 +30,7 @@ class Board extends Component {
     }
 
     handleClick = (e) =>{
+        let pixelData = this.state.pixelData;
         let clickedPixel = e.target;
         let row = parseInt(clickedPixel.getAttribute('row'));
         let column = parseInt(clickedPixel.getAttribute('column'));
@@ -38,35 +39,54 @@ class Board extends Component {
         let eraserSelected = this.props.eraser;
 
       if (this.props.fillButton) {
-        this.paintFill(position);
+          const targetsColor = pixelData[row][column];
+
+        this.paintFill(position,targetsColor);
       }
       
       else {
         let color = !eraserSelected ? this.props.color : ''; //paint or eraser
-        let pixelData = this.state.pixelData;
         pixelData[row][column] = color;
         this.setState({pixelData:pixelData});
       }
     }
 
-    paintFill = (position) => {
-      this.getNeighbors(position.row,position.column);
+    paintFill = (position, matchColor) => {
+        let color = this.props.color;
+        let pixelData = this.state.pixelData;
+        let neighbors = this.getNeighbors(position);
 
+        if (neighbors.length > 0) {
+            
+            // TODO: refactor, hardcoded row col limits ets.
+            let sanitizedNeighbors = neighbors.filter(pos => (pos.row >= 0 && pos.row <= 29 && pos.column >=0 && pos.column <= 29));
+            let matches = sanitizedNeighbors.filter(pos => pixelData[pos.row][pos.column] === matchColor);
+            //let notColorMatch = sanitizedNeighbors.filter(pos => !pixelData[pos.row][pos.column] === matchColor);
+            
+            matches.forEach(function(position) {
+                pixelData[position.row][position.column] = color;
+            });
+            this.setState({pixelData:pixelData});
+
+            matches.forEach(position2 => this.paintFill(position2, matchColor));
+        }
     }
 
-    getNeighbors = (r,c) => {
-        const colBack = c-1;
-        const colOver = c+1;
-        const rowDown = r+1;
-        const rowUp = r-1;
-        const arr= [
-            this.state.pixelData[rowUp][c] +'\n'
-            ,this.state.pixelData[rowDown][c] + '-> ' + rowDown + '\n' 
-            ,this.state.pixelData[r][colOver] + '-> ' + colOver +'\n' 
-            ,this.state.pixelData[r][colBack] +'\n'
+    getNeighbors = (position) => {
+        const column = position.column;
+        const row = position.row;
+        
+        const colBack = column-1;
+        const colOver = column+1;
+        const rowDown = row+1;
+        const rowUp = row-1;
+        const neighbors = [
+            {row:rowUp,column:column}
+            ,{row:rowDown,column:column}
+            ,{row:row,column:colOver}
+            ,{row:row,column:colBack}
         ]
-
-        return arr;
+        return neighbors;
     }
 
     clearBoard = () => {
@@ -90,7 +110,7 @@ class Board extends Component {
         for (let j = 0; j < c; j++) {
             let target = 'row_'+i+":"+"column_"+j;
             let value = target;
-            let background;// = this.state[target];
+            let background;
             
             if (pixelArrayHasInitialPopulationComplete) {
                 background = this.state.pixelData[i][j];
