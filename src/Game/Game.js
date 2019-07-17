@@ -60,7 +60,8 @@ class Game extends Component {
     }
 
     selectEraser = () => {
-      this.setState({eraserSelected: !this.state.eraserSelected});
+        if (!this.state.eraserSelected) {this.setState({fillButtonSelected:false})};
+        this.setState({eraserSelected: !this.state.eraserSelected});
     }
     
     EraseButton(props) {
@@ -86,7 +87,9 @@ class Game extends Component {
     }
 
     selectFillButton = (e) => {
-      this.setState({fillButtonSelected: !this.state.fillButtonSelected});
+        if (!this.state.fillButtonSelected) {this.setState({eraserSelected:false})};
+        this.setState({fillButtonSelected: !this.state.fillButtonSelected});
+
     }
 
     ClearButton = (props) => {
