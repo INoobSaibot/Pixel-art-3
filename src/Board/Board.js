@@ -54,6 +54,8 @@ class Board extends Component {
         let color = this.props.color;
         let pixelData = this.state.pixelData;
         let neighbors = this.getNeighbors(position);
+        let pixelClicked = color => pixelData[position.row][position.column] = color;
+        pixelClicked(color);
 
         //TODO: bandaid to fix edge-case bug, if color to paint === targets color, causes infinite recursion, as returning no matches is only thing that ends recursion
         if (color === matchColor) {return;}
