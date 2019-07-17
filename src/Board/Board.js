@@ -37,11 +37,10 @@ class Board extends Component {
         let position = {row:row,column:column};
 
         let eraserSelected = this.props.eraser;
-
-      if (this.props.fillButton) {
-          const targetsColor = pixelData[row][column];
-
-        this.paintFill(position,targetsColor);
+        
+        if (this.props.fillButton) {
+            const targetsColor = pixelData[row][column];
+            this.paintFill(position,targetsColor);
       }
       
       else {
@@ -55,6 +54,9 @@ class Board extends Component {
         let color = this.props.color;
         let pixelData = this.state.pixelData;
         let neighbors = this.getNeighbors(position);
+
+        //TODO: bandaid to fix edge-case bug, if color to paint === targets color, causes infinite recursion, as returning no matches is only thing that ends recursion
+        if (color === matchColor) {return;}
 
         if (neighbors.length > 0) {
             
@@ -108,8 +110,7 @@ class Board extends Component {
         let childState = [];
         //inner
         for (let j = 0; j < c; j++) {
-            let target = 'row_'+i+":"+"column_"+j;
-            let value = target;
+            let value = `row_${i}:column_${j}`;
             let background;
             
             if (pixelArrayHasInitialPopulationComplete) {
