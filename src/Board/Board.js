@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import HTTPService from '../HTTPService/HTTPService'
 
 class Board extends Component {
     constructor(props) {
       super(props);
+      this.http = new HTTPService();
       this.state = {
           pixelData :[
 
@@ -15,6 +17,7 @@ class Board extends Component {
         this.setState({pixelData:gridData});
 
         this.props.setClearHandler(this.clearBoard);
+        this.props.setSaveHandler(this.saveArt)
     }
 
     render() {
@@ -98,6 +101,10 @@ class Board extends Component {
         this.setState({pixelData:emptyPixelData});
     }
 
+    saveArt = () => {
+        this.http.postRequest(this.state);
+    }
+
     loopyRenderRow(r,c){
         //also used to popular pixelData array to all empty value 2d array grid,
         // will refactro, for 2 methods, with a common paramed method
@@ -130,21 +137,6 @@ class Board extends Component {
         }
         const gridAndPopulatedStateArray = {grid:grid, state:gridState};
         return gridAndPopulatedStateArray;
-    }
-
-    post() {
-        const URL = 'http://localhost:8000/pixels';
-        
-        const item = this.state;
-
-        fetch(URL, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(item),
-        });
     }
   }
 

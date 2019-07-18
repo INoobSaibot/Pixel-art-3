@@ -17,9 +17,10 @@ class Game extends Component {
     }
     
     render() {
-      let eraser = <this.EraseButton handleClick={this.selectEraser} value={'eraser'} selected={this.state.eraserSelected}/>;
-      let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected}/>;
+      let eraser = <this.EraseButton handleClick={this.selectEraser} value={'eraser'} selected={this.state.eraserSelected} />;
+      let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected} />;
       let clearButton = <this.ClearButton/>;
+      let saveButton = <this.SaveButton handleClick={this.saveClicked} />;
       
       const pallette = this.colors.map((item) => {
         return (
@@ -39,12 +40,13 @@ class Game extends Component {
                 {eraser}
                 {fillButton}
                 {clearButton}
+                {saveButton}
               </div>
             
             <div className="column"> 
             <Board color={this.state.paintColor} eraser={this.state.eraserSelected} 
                 fillButton={this.state.fillButtonSelected} gameState={this.state}
-                setClearHandler={this.setClearClickHandler}/>
+                setClearHandler={this.setClearClickHandler} setSaveHandler={this.setSaveHandler} />
             </div>
 
           </div>
@@ -55,9 +57,25 @@ class Game extends Component {
       );
     }
 
-    handleClick = (e) =>{
-      this.setState({paintColor: e.target.value})
+    setSaveHandler = (handlerFromBoard) => {
+        this.handleSaveClicked = handlerFromBoard;
     }
+    saveClicked = () => {
+        this.handleSaveClicked();
+    }
+    SaveButton(props) {
+        let style= {'':''};// props.selected ? {borderColor: 'yellow'} : {borderColor:''};
+        let iconStyle = {fontSize:'44px'};
+  
+        return (
+          <button className='btn row' style={style} onClick={props.handleClick} value={props.value}>
+            <i className="fa fa-save" style={iconStyle}></i>
+          </button>
+        )
+      }
+  
+
+
 
     selectEraser = () => {
         if (!this.state.eraserSelected) {this.setState({fillButtonSelected:false})};
@@ -66,7 +84,7 @@ class Game extends Component {
     
     EraseButton(props) {
       let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
-      let iconStyle = {fontSize:'36px'};
+      let iconStyle = {fontSize:'35px', width:'38px'};
 
       return (
         <button className='btn row' style={style} onClick={props.handleClick} value={props.value}>
