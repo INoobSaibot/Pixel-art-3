@@ -15,6 +15,10 @@ class Game extends Component {
         clearPixels: false,
       }
     }
+
+    handleClick = (e) =>{
+        this.setState({paintColor: e.target.value})
+    }
     
     render() {
       let eraser = <this.EraseButton handleClick={this.selectEraser} value={'eraser'} selected={this.state.eraserSelected} />;
