@@ -43,7 +43,7 @@ class HTTPService {
     // }
 
     async postRequest(state) {
-      fetch(`${API_HOST}/hello`, {
+      fetch(`${API_HOST}/art`, {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           'Accept': 'application/json'},
