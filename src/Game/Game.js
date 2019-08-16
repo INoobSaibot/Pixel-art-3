@@ -68,7 +68,7 @@ class Game extends Component {
         this.handleSaveClicked();
     }
     SaveButton(props) {
-        let style= {height:'50px'};// props.selected ? {borderColor: 'yellow'} : {borderColor:''};
+        let style= {height:'50px'};
         let iconStyle = {fontSize:'44px'};
   
         return (
@@ -82,7 +82,7 @@ class Game extends Component {
         if (!this.state.eraserSelected) {this.setState({fillButtonSelected:false})};
         this.setState({eraserSelected: !this.state.eraserSelected});
     }
-    
+
     EraseButton(props) {
       let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
       let iconStyle = {fontSize:'35px', width:'38px'};
