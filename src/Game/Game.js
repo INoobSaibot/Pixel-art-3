@@ -17,9 +17,12 @@ class Game extends Component {
         eraserSelected: false,
         fillButtonSelected: false,
         clearPixels: false,
-        illuminatiPlay: false
+        illuminatiPlaying: false
       }
       this.audio = new Audio(illumSong);
+      this.audio.onended = () => {
+        this.setState({illuminatiPlaying:false});
+      }
     }
 
     handleClick = (e) =>{
@@ -31,7 +34,7 @@ class Game extends Component {
       let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected} paintColor={this.state.paintColor}/>;
       let clearButton = <this.ClearButton/>;
       let saveButton = <this.SaveButton handleClick={this.saveClicked} />;
-      let illuminati = <this.IlluminatiButton handleClick={this.illuminatiClicked} selected={this.state.illuminatiPlay} audio={this.audio}/>;
+      let illuminati = <this.IlluminatiButton handleClick={this.illuminatiClicked} selected={this.state.illuminatiPlaying} audio={this.audio}/>;
       
       const pallette = this.colors.map((item) => {
         return (
@@ -103,22 +106,20 @@ class Game extends Component {
     }
 
     illuminatiClicked = () => {
-      this.audio.currentTime = 0;
-      
-      if (!this.state.illuminatiPlay || this.audio.ended) {
+
+      if (!this.state.illuminatiPlaying || this.audio.ended) {
         this.audio.play();
       } else {
         this.audio.pause();
         this.audio.currentTime = 0;
       }
 
-      this.setState({illuminatiPlay:!this.state.illuminatiPlay});
+      this.setState({illuminatiPlaying:!this.state.illuminatiPlaying});
     }
     IlluminatiButton(props) {
       let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
       let iconStyle = {fontSize:'35px', width:'38px'};
       let imgSrc = illuminatiGraphic;
-
 
       return (
         <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
