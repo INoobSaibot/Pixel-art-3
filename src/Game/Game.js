@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import './index.css';
-//import './App.css';
+import './game.css';
 import Board from '../Board/Board.js'
 
 class Game extends Component {
@@ -68,19 +68,16 @@ class Game extends Component {
         this.handleSaveClicked();
     }
     SaveButton(props) {
-        let style= {'':''};// props.selected ? {borderColor: 'yellow'} : {borderColor:''};
+        let style= {height:'50px'};// props.selected ? {borderColor: 'yellow'} : {borderColor:''};
         let iconStyle = {fontSize:'44px'};
   
         return (
-          <button className='btn row' style={style} onClick={props.handleClick} value={props.value}>
+          <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
             <i className="fa fa-save" style={iconStyle}></i>
           </button>
         )
       }
   
-
-
-
     selectEraser = () => {
         if (!this.state.eraserSelected) {this.setState({fillButtonSelected:false})};
         this.setState({eraserSelected: !this.state.eraserSelected});
@@ -91,7 +88,7 @@ class Game extends Component {
       let iconStyle = {fontSize:'35px', width:'38px'};
 
       return (
-        <button className='btn row' style={style} onClick={props.handleClick} value={props.value}>
+        <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
           <i className="fa fa-eraser" style={iconStyle}></i>
         </button>
       )
@@ -102,7 +99,7 @@ class Game extends Component {
       let iconStyle = {fontSize:'36px', width:'38px'};
 
       return (
-        <button className='btn row' style={style} onClick={props.handleClick} value={props.value}>
+        <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
           <i className="fa fa-bitbucket" style={iconStyle}></i>
         </button>
       )
@@ -119,7 +116,7 @@ class Game extends Component {
         let iconStyle = {fontSize:'36px', width:'38px'};
         
         return (
-        <button className='btn row' style={style} onClick={this.clearClick} value={props.value}>
+        <button className='btn row toolButton' style={style} onClick={this.clearClick} value={props.value}>
           <i className="fa fa-bomb" style={iconStyle}></i>
         </button>
       )
