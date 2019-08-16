@@ -19,10 +19,12 @@ class Game extends Component {
         clearPixels: false,
         illuminatiPlaying: false
       }
+
       this.audio = new Audio(illumSong);
       this.audio.onended = () => {
         this.setState({illuminatiPlaying:false});
       }
+
     }
 
     handleClick = (e) =>{
@@ -97,16 +99,16 @@ class Game extends Component {
     EraseButton(props) {
       let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
       let iconStyle = {fontSize:'35px', width:'38px'};
+      let iconClasses = props.selected ? "fa fa-eraser shakingIcon" : "fa fa-eraser";
 
       return (
         <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
-          <i className="fa fa-eraser" style={iconStyle}></i>
+          <i className={iconClasses} style={iconStyle}></i>
         </button>
       )
     }
 
     illuminatiClicked = () => {
-
       if (!this.state.illuminatiPlaying || this.audio.ended) {
         this.audio.play();
       } else {
@@ -132,10 +134,11 @@ class Game extends Component {
       let bucketColor = props.selected ? props.paintColor :"";
       let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
       let iconStyle = {fontSize:'36px', width:'38px', color: bucketColor};
+      let bucketClasses = props.selected ? "fa fa-bitbucket pouringBucket" : "fa fa-bitbucket";
 
       return (
         <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
-          <i className="fa fa-bitbucket" style={iconStyle}></i>
+          <i className={bucketClasses} style={iconStyle}></i>
         </button>
       )
     }
