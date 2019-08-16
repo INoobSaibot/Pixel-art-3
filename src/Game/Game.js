@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 //import './index.css';
 import './game.css';
 import Board from '../Board/Board.js'
+import illuminatiGraphic from '../assets/illum.png'
+import bubbleSound from '../assets/zapsplat_cartoon_bubbles_001_26516.mp3'
+import illumSong from '../assets/The X Files theme.mp3'
+
 
 class Game extends Component {
     constructor(props) {
@@ -13,7 +17,9 @@ class Game extends Component {
         eraserSelected: false,
         fillButtonSelected: false,
         clearPixels: false,
+        illuminatiPlay: false
       }
+      this.audio = new Audio(illumSong);
     }
 
     handleClick = (e) =>{
@@ -22,9 +28,10 @@ class Game extends Component {
     
     render() {
       let eraser = <this.EraseButton handleClick={this.selectEraser} value={'eraser'} selected={this.state.eraserSelected} />;
-      let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected} />;
+      let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected} paintColor={this.state.paintColor}/>;
       let clearButton = <this.ClearButton/>;
       let saveButton = <this.SaveButton handleClick={this.saveClicked} />;
+      let illuminati = <this.IlluminatiButton handleClick={this.illuminatiClicked} selected={this.state.illuminatiPlay} audio={this.audio}/>;
       
       const pallette = this.colors.map((item) => {
         return (
@@ -45,6 +52,7 @@ class Game extends Component {
                 {fillButton}
                 {clearButton}
                 {saveButton}
+                {illuminati}
               </div>
             
             <div className="column"> 
@@ -94,9 +102,35 @@ class Game extends Component {
       )
     }
 
-    FillButton(props) {
+    illuminatiClicked = () => {
+      this.audio.currentTime = 0;
+      
+      if (!this.state.illuminatiPlay || this.audio.ended) {
+        this.audio.play();
+      } else {
+        this.audio.pause();
+        this.audio.currentTime = 0;
+      }
+
+      this.setState({illuminatiPlay:!this.state.illuminatiPlay});
+    }
+    IlluminatiButton(props) {
       let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
-      let iconStyle = {fontSize:'36px', width:'38px'};
+      let iconStyle = {fontSize:'35px', width:'38px'};
+      let imgSrc = illuminatiGraphic;
+
+
+      return (
+        <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
+          <i className=""><img style={iconStyle} src={imgSrc}></img></i>
+        </button>
+      )
+    }
+
+    FillButton(props) {
+      let bucketColor = props.selected ? props.paintColor :"";
+      let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
+      let iconStyle = {fontSize:'36px', width:'38px', color: bucketColor};
 
       return (
         <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
