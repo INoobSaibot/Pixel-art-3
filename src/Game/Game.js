@@ -18,7 +18,8 @@ class Game extends Component {
         eraserSelected: false,
         fillButtonSelected: false,
         clearPixels: false,
-        illuminatiPlaying: false
+        illuminatiPlaying: false,
+        clearCountDown:false
       }
 
       this.audio = new Audio(illumSong);
@@ -36,7 +37,7 @@ class Game extends Component {
     render() {
       let eraser = <this.EraseButton handleClick={this.selectEraser} value={'eraser'} selected={this.state.eraserSelected} />;
       let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected} paintColor={this.state.paintColor}/>;
-      let clearButton = <this.ClearButton/>;
+      let clearButton = <this.ClearButton clearCountDown={this.state.clearCountDown} />;
       let saveButton = <this.SaveButton handleClick={this.saveClicked} />;
       let illuminati = <this.IlluminatiButton handleClick={this.illuminatiClicked} selected={this.state.illuminatiPlaying} audio={this.audio}/>;
       
@@ -154,17 +155,26 @@ class Game extends Component {
     ClearButton = (props) => {
         let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
         let iconStyle = {fontSize:'36px', width:'38px'};
+        let iconClasses = "fa fa-bomb";
+        if (props.clearCountDown) {
+          iconClasses += " expandingIcon";
+        }
         
         return (
         <button className='btn row toolButton' style={style} onClick={this.clearClick} value={props.value}>
-          <i className="fa fa-bomb" style={iconStyle}></i>
+          <i className={iconClasses} style={iconStyle}></i>
         </button>
       )
     }
 
     clearClick = () => {
+      this.setState({clearCountDown:true});
+      setTimeout( () => {
         this.handleClearClick();
         this.boom.play();
+        this.setState({clearCountDown:false})
+      },1000)
+        
     }
     setClearClickHandler = (handlerFromBoard) => {
         this.handleClearClick = handlerFromBoard;
