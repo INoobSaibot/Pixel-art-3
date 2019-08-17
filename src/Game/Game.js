@@ -5,6 +5,7 @@ import Board from '../Board/Board.js'
 import illuminatiGraphic from '../assets/illum.png'
 import bubbleSound from '../assets/zapsplat_cartoon_bubbles_001_26516.mp3'
 import illumSong from '../assets/The X Files theme.mp3'
+import boom from '../assets/Explosion 2-SoundBible.com-1641389556.mp3';
 
 
 class Game extends Component {
@@ -24,6 +25,7 @@ class Game extends Component {
       this.audio.onended = () => {
         this.setState({illuminatiPlaying:false});
       }
+      this.boom = new Audio(boom);
 
     }
 
@@ -161,10 +163,9 @@ class Game extends Component {
     }
 
     clearClick = () => {
-        alert('boom');
         this.handleClearClick();
+        this.boom.play();
     }
-
     setClearClickHandler = (handlerFromBoard) => {
         this.handleClearClick = handlerFromBoard;
     }
