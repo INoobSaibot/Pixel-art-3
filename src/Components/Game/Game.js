@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 //import './index.css';
 import './game.css';
 import Board from '../Board/Board.js'
-import illuminatiGraphic from '../assets/illum.png'
-import bubbleSound from '../assets/zapsplat_cartoon_bubbles_001_26516.mp3'
-import illumSong from '../assets/The X Files theme.mp3'
-import boom from '../assets/Explosion 2-SoundBible.com-1641389556.mp3';
+import illuminatiGraphic from '../../assets/illum.png'
+//import bubbleSound from '../../assets/zapsplat_cartoon_bubbles_001_26516.mp3'
+import illumSong from '../../assets/The X Files theme.mp3'
+import boom from '../../assets/Explosion 2-SoundBible.com-1641389556.mp3';
+import OpenButton from '../Buttons/OpenButton';
 
 
 class Game extends Component {
@@ -19,7 +20,8 @@ class Game extends Component {
         fillButtonSelected: false,
         clearPixels: false,
         illuminatiPlaying: false,
-        clearCountDown:false
+        clearCountDown:false,
+        currentlySelectedArt:'blank'
       }
 
       this.audio = new Audio(illumSong);
@@ -40,7 +42,8 @@ class Game extends Component {
       let clearButton = <this.ClearButton clearCountDown={this.state.clearCountDown} />;
       let saveButton = <this.SaveButton handleClick={this.saveClicked} />;
       let illuminati = <this.IlluminatiButton handleClick={this.illuminatiClicked} selected={this.state.illuminatiPlaying} audio={this.audio}/>;
-      
+      let openButton = <OpenButton selectArtKey={this.selectArtKey} />;
+
       const pallette = this.colors.map((item) => {
         return (
                 <span className='' key={item}>
@@ -60,13 +63,15 @@ class Game extends Component {
                 {fillButton}
                 {clearButton}
                 {saveButton}
+                {openButton}
                 {illuminati}
               </div>
             
             <div className="column"> 
             <Board color={this.state.paintColor} eraser={this.state.eraserSelected} 
                 fillButton={this.state.fillButtonSelected} gameState={this.state}
-                setClearHandler={this.setClearClickHandler} setSaveHandler={this.setSaveHandler} />
+                setClearHandler={this.setClearClickHandler} setSaveHandler={this.setSaveHandler}
+                setOpenItemHandler={this.setOpenItemHandler}/>
             </div>
 
           </div>
@@ -77,23 +82,38 @@ class Game extends Component {
       );
     }
 
-    setSaveHandler = (handlerFromBoard) => {
-        this.handleSaveClicked = handlerFromBoard;
+    selectArtKey = (key) => {
+      this.setState({currentlySelectedArt: key})
+      this.handleItemClicked(key);
     }
+
+    setOpenItemHandler = (handlerFromBoard) => {
+      this.handleItemClicked = handlerFromBoard;
+    }
+    itemClicked = () => {
+      this.handleItemClicked();
+    }
+
+    
+    setSaveHandler = (handlerFromBoard) => {
+      this.handleSaveClicked = handlerFromBoard;
+    }
+    
     saveClicked = () => {
         this.handleSaveClicked();
     }
+    
     SaveButton(props) {
         let style= {height:'50px'};
         let iconStyle = {fontSize:'44px'};
   
         return (
           <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
-            <i className="fa fa-save" style={iconStyle}></i>
+            <i className="fa fa-save" style={iconStyle}></i>Save
           </button>
         )
       }
-  
+    
     selectEraser = () => {
         if (!this.state.eraserSelected) {this.setState({fillButtonSelected:false})};
         this.setState({eraserSelected: !this.state.eraserSelected});
@@ -128,7 +148,7 @@ class Game extends Component {
 
       return (
         <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
-          <i className=""><img style={iconStyle} src={imgSrc}></img></i>
+          <i className=""><img style={iconStyle} src={imgSrc} alt={"open file button, img of 3.5inch disk"}></img></i>
         </button>
       )
     }

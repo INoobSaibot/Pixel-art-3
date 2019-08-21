@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import HTTPService from '../HTTPService/HTTPService'
+import HTTPService from '../../HTTPService/HTTPService'
 
 class Board extends Component {
     constructor(props) {
@@ -17,7 +17,8 @@ class Board extends Component {
         this.setState({pixelData:gridData});
 
         this.props.setClearHandler(this.clearBoard);
-        this.props.setSaveHandler(this.saveArt)
+        this.props.setSaveHandler(this.saveArt);
+        this.props.setOpenItemHandler(this.openArt);
     }
 
     render() {
@@ -102,9 +103,33 @@ class Board extends Component {
     }
 
     saveArt = () => {
-        this.http.postRequest(this.state);
+        //this.http.postRequest(this.state);
+        let localStorage = window.localStorage;
+
+        let key = "";
+        let model = this.state;
+        let value = JSON.stringify(model);
+
+        let msg = "Please name your art:";
+        let defaultName ="defaultName";
+
+        let artName = prompt(msg,defaultName);
+
+        if (artName === null || artName === "") {
+            //user cancelled prompt
+        } else {
+            key = artName;
+            localStorage.setItem(key,value);
+        }
     }
 
+    openArt = (key) => {
+        let localStorage = window.localStorage;
+        let arrFromLocalStorage = localStorage.getItem(key);
+
+        let pixelDataModel = JSON.parse(arrFromLocalStorage);
+        this.setState(pixelDataModel);
+    }
     loopyRenderRow(r,c){
         //also used to popular pixelData array to all empty value 2d array grid,
         // will refactro, for 2 methods, with a common paramed method

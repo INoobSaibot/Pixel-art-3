@@ -1,4 +1,4 @@
-const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/'
+//const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/'
 let API_HOST = 'http://localhost:8000';
 API_HOST = 'https://crudcrud.com/api/1d06808ac2c3432b8d8721120e3c5eec'
 
