@@ -111,7 +111,7 @@ class Board extends Component {
         let value = JSON.stringify(model);
 
         let msg = "Please name your art:";
-        let defaultName ="defaultName";
+        let defaultName =this.props.defaultFileName;
 
         let artName = prompt(msg,defaultName);
 

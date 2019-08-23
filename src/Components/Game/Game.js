@@ -6,7 +6,7 @@ import illuminatiGraphic from '../../assets/illum.png'
 //import bubbleSound from '../../assets/zapsplat_cartoon_bubbles_001_26516.mp3'
 import illumSong from '../../assets/The X Files theme.mp3'
 import boom from '../../assets/Explosion 2-SoundBible.com-1641389556.mp3';
-import OpenButton from '../Buttons/OpenButton';
+import FileMenuButton from '../Buttons/FileMenuButton/FileMenuButton.js'
 
 
 class Game extends Component {
@@ -40,9 +40,8 @@ class Game extends Component {
       let eraser = <this.EraseButton handleClick={this.selectEraser} value={'eraser'} selected={this.state.eraserSelected} />;
       let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected} paintColor={this.state.paintColor}/>;
       let clearButton = <this.ClearButton clearCountDown={this.state.clearCountDown} />;
-      let saveButton = <this.SaveButton handleClick={this.saveClicked} />;
       let illuminati = <this.IlluminatiButton handleClick={this.illuminatiClicked} selected={this.state.illuminatiPlaying} audio={this.audio}/>;
-      let openButton = <OpenButton selectArtKey={this.selectArtKey} />;
+      let fileMenuButton = <FileMenuButton selectArtKey={this.selectArtKey} handleSave={this.saveClicked}/>;
 
       const pallette = this.colors.map((item) => {
         return (
@@ -62,16 +61,15 @@ class Game extends Component {
                 {eraser}
                 {fillButton}
                 {clearButton}
-                {saveButton}
-                {openButton}
                 {illuminati}
+                {fileMenuButton}
               </div>
             
             <div className="column"> 
             <Board color={this.state.paintColor} eraser={this.state.eraserSelected} 
                 fillButton={this.state.fillButtonSelected} gameState={this.state}
                 setClearHandler={this.setClearClickHandler} setSaveHandler={this.setSaveHandler}
-                setOpenItemHandler={this.setOpenItemHandler}/>
+                setOpenItemHandler={this.setOpenItemHandler} defaultFileName={this.state.currentlySelectedArt}/>
             </div>
 
           </div>
@@ -115,8 +113,9 @@ class Game extends Component {
       }
     
     selectEraser = () => {
-        if (!this.state.eraserSelected) {this.setState({fillButtonSelected:false})};
-        this.setState({eraserSelected: !this.state.eraserSelected});
+      // todo: refactor this, if eraser not being used already, set fill button/ turn off fill button bucket, before activiating eraser
+      if (!this.state.eraserSelected) {this.setState({fillButtonSelected:false})};
+      this.setState({eraserSelected: !this.state.eraserSelected});
     }
 
     EraseButton(props) {
