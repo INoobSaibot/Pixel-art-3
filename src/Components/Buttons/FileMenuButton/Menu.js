@@ -11,7 +11,6 @@ class Menu extends Component {
         showFiles:false,
       }
       this.handleSave = props.handleSave;
-      console.log(props);
     }
     
     render() {
@@ -64,7 +63,6 @@ class Menu extends Component {
   }
 
   handleOpenFile(key) {
-    console.log(key)
     this.props.selectArtKey(key);
   }
 
