@@ -41,7 +41,7 @@ class Game extends Component {
       let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected} paintColor={this.state.paintColor}/>;
       let clearButton = <this.ClearButton clearCountDown={this.state.clearCountDown} />;
       let illuminati = <this.IlluminatiButton handleClick={this.illuminatiClicked} selected={this.state.illuminatiPlaying} audio={this.audio}/>;
-      let fileMenuButton = <FileMenuButton selectArtKey={this.selectArtKey} handleSave={this.saveClicked}/>;
+      let fileMenuButton = <FileMenuButton selectArtKey={this.selectArtKey} handleSave={this.saveClicked} new={this.new}/>;
 
       const pallette = this.colors.map((item) => {
         return (
@@ -69,7 +69,7 @@ class Game extends Component {
             <Board color={this.state.paintColor} eraser={this.state.eraserSelected} 
                 fillButton={this.state.fillButtonSelected} gameState={this.state}
                 setClearHandler={this.setClearClickHandler} setSaveHandler={this.setSaveHandler}
-                setOpenItemHandler={this.setOpenItemHandler} currentlyOpenArt={this.state.currentlySelectedArt}
+                setOpenItemHandler={this.setOpenItemHandler} setNewHandler={this.setNewHandler} currentlyOpenArt={this.state.currentlySelectedArt}
                 changeCurrentArt={this.changeCurrentArt}/>
             </div>
 
@@ -100,6 +100,14 @@ class Game extends Component {
     
     setSaveHandler = (handlerFromBoard) => {
       this.handleSaveClicked = handlerFromBoard;
+    }
+
+    new = () => {
+      this.handleSaveClicked();
+      this.handleNew();
+    }
+    setNewHandler = (handlerFromBoard) => {
+      this.handleNew = handlerFromBoard;
     }
     
     saveClicked = (e) => {

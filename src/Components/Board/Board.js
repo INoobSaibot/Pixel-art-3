@@ -19,6 +19,7 @@ class Board extends Component {
         this.props.setClearHandler(this.clearBoard);
         this.props.setSaveHandler(this.saveArt);
         this.props.setOpenItemHandler(this.openArt);
+        this.props.setNewHandler(this.new);
     }
 
     render() {
@@ -31,6 +32,11 @@ class Board extends Component {
             {grid}
         </div>
       );
+    }
+
+    new = () => {
+        this.clearBoard();
+        this.props.changeCurrentArt(undefined);
     }
 
     handleClick = (e) =>{
@@ -108,7 +114,6 @@ class Board extends Component {
         let model = this.state;
         let saveAs = props ==="saveAs";
 
-
         let value = JSON.stringify(model);
 
         if (this.props.currentlyOpenArt && !saveAs) {
@@ -116,7 +121,8 @@ class Board extends Component {
             // saVED!!
         } else {
             let msg = "Please name your art:";
-            let defaultName =this.props.currentlyOpenArt;
+            let untitled = this.generateNewFileName();
+            let defaultName =this.props.currentlyOpenArt? this.props.currentlyOpenArt : untitled;
 
             let artName = prompt(msg,defaultName);
 
@@ -129,6 +135,13 @@ class Board extends Component {
                 this.props.changeCurrentArt(key);
             }
         }
+    }
+
+    generateNewFileName() {
+        //todo
+        //check in loop untitle-Number i loop, until first one in in set/ is available
+        //faked for now
+        return 'untitled-n'
     }
 
     openArt = (key) => {

@@ -28,15 +28,17 @@ class Menu extends Component {
       //todo
       let selectedOption = e.target.getAttribute('name');
 
-      if (selectedOption === 'save') {
+      if (selectedOption === 'new') {
+        this.props.new();
+      }
+      else if (selectedOption === 'open') {
+        this.handleOpenClick(e);
+      }
+      else if (selectedOption === 'save') {
         this.props.handleSave("save");
       }
       if (selectedOption === "save as") {
         this.props.handleSave('saveAs');
-      }
-      
-      else if (selectedOption === 'open') {
-        this.handleOpenClick(e);
       }
 
       else if (e.target.classList.contains('file')) {

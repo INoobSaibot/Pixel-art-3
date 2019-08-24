@@ -10,7 +10,7 @@ class FileMenuButton extends Component {
       this.state = {
         showMenu:true
       }
-      this.options = ['open','save','save as'];
+      this.options = ['new','open','save','save as'];
       
     }
     
@@ -18,7 +18,7 @@ class FileMenuButton extends Component {
         let style= {height:'50px'};
         let iconStyle = {fontSize:'44px'};
         const menuOptions = <Menu options={this.options} handleClick={this.handleClick}
-         selectArtKey={this.props.selectArtKey} handleSave={this.props.handleSave}/>;
+         selectArtKey={this.props.selectArtKey} handleSave={this.props.handleSave} new={this.props.new}/>;
 
         return (
           <div className="w3-dropdown-hover">
