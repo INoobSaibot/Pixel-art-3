@@ -27,7 +27,7 @@ class Board extends Component {
   
       return (
         <div>
-          <div></div>
+          <div>Name:{this.props.currentlyOpenArt}</div>
             {grid}
         </div>
       );
@@ -102,24 +102,32 @@ class Board extends Component {
         this.setState({pixelData:emptyPixelData});
     }
 
-    saveArt = () => {
-        //this.http.postRequest(this.state);
+    saveArt = (props) => {
         let localStorage = window.localStorage;
-
-        let key = "";
+        let key = this.state.name;
         let model = this.state;
+        let saveAs = props ==="saveAs";
+
+
         let value = JSON.stringify(model);
 
-        let msg = "Please name your art:";
-        let defaultName =this.props.defaultFileName;
-
-        let artName = prompt(msg,defaultName);
-
-        if (artName === null || artName === "") {
-            //user cancelled prompt
-        } else {
-            key = artName;
+        if (this.props.currentlyOpenArt && !saveAs) {
             localStorage.setItem(key,value);
+            // saVED!!
+        } else {
+            let msg = "Please name your art:";
+            let defaultName =this.props.currentlyOpenArt;
+
+            let artName = prompt(msg,defaultName);
+
+            if (artName === null || artName === "") {
+                //user cancelled prompt
+            } else {
+                key = artName;
+                localStorage.setItem(key,value);
+                
+                this.props.changeCurrentArt(key);
+            }
         }
     }
 

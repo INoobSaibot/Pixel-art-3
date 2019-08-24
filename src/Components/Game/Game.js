@@ -21,7 +21,7 @@ class Game extends Component {
         clearPixels: false,
         illuminatiPlaying: false,
         clearCountDown:false,
-        currentlySelectedArt:'blank'
+        currentlySelectedArt:null
       }
 
       this.audio = new Audio(illumSong);
@@ -69,7 +69,8 @@ class Game extends Component {
             <Board color={this.state.paintColor} eraser={this.state.eraserSelected} 
                 fillButton={this.state.fillButtonSelected} gameState={this.state}
                 setClearHandler={this.setClearClickHandler} setSaveHandler={this.setSaveHandler}
-                setOpenItemHandler={this.setOpenItemHandler} defaultFileName={this.state.currentlySelectedArt}/>
+                setOpenItemHandler={this.setOpenItemHandler} currentlyOpenArt={this.state.currentlySelectedArt}
+                changeCurrentArt={this.changeCurrentArt}/>
             </div>
 
           </div>
@@ -78,6 +79,10 @@ class Game extends Component {
           </div>
         </div>
       );
+    }
+
+    changeCurrentArt = (name) => {
+      this.setState({currentlySelectedArt:name})
     }
 
     selectArtKey = (key) => {
@@ -97,8 +102,8 @@ class Game extends Component {
       this.handleSaveClicked = handlerFromBoard;
     }
     
-    saveClicked = () => {
-        this.handleSaveClicked();
+    saveClicked = (e) => {
+        this.handleSaveClicked(e);
     }
     
     SaveButton(props) {

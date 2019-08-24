@@ -10,7 +10,6 @@ class Menu extends Component {
         fileMenuOpen:true,
         showFiles:false,
       }
-      this.handleSave = props.handleSave;
     }
     
     render() {
@@ -29,8 +28,11 @@ class Menu extends Component {
       //todo
       let selectedOption = e.target.getAttribute('name');
 
-      if (selectedOption === "save") {
-        this.handleSave();
+      if (selectedOption === 'save') {
+        this.props.handleSave("save");
+      }
+      if (selectedOption === "save as") {
+        this.props.handleSave('saveAs');
       }
       
       else if (selectedOption === 'open') {
@@ -83,7 +85,7 @@ class Menu extends Component {
         let defaultClasses = 'w3-bar-item w3-button'
         let classList = props.classList ? defaultClasses + ' ' +props.classList : defaultClasses;
 
-        return <div className={classList} key={item} name={item} onClick={this.handleClick}>{item}{props.classList}</div>;
+        return <div className={classList} key={item} name={item} onClick={this.handleClick}>{item}</div>;
     }
 }
 

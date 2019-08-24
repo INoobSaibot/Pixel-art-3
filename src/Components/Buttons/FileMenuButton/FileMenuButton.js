@@ -10,7 +10,7 @@ class FileMenuButton extends Component {
       this.state = {
         showMenu:true
       }
-      this.options = ['open','save'];
+      this.options = ['open','save','save as'];
       
     }
     
