@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './fileMenuButton.css';
+import './menu.css';
 
 
 class Menu extends Component {
@@ -15,10 +15,12 @@ class Menu extends Component {
     render() {
         const options = <this.renderMenu options={this.props.options} handleClick={this.handleClick}/>;
         const fileList = <this.renderMenu options={this.getFileList()} handleClick={this.handleClick} classList={'file'}/>;
+        const back = <span className="back" onClick={this.clickBack}>&lt;-back</span>
 
         return (
-        <div className="w3-dropdown-content w3-bar-block w3-border">
+        <div className="menu w3-dropdown-content w3-bar-block w3-border">
           {this.state.fileMenuOpen && options}
+          {this.state.showFiles && back}
           {this.state.showFiles && fileList}
         </div>
         )
@@ -45,6 +47,13 @@ class Menu extends Component {
         this.handleOpenFile(selectedOption);
       }
   }
+
+  clickBack =(e)=> {
+    console.log(e);
+    if (this.state.showFiles) {
+      this.setState({showFiles:false, fileMenuOpen:true});
+    }
+  }
     
     renderMenu = (props) => {
         const menu = props.options.map( (entry) => {
@@ -70,10 +79,6 @@ class Menu extends Component {
     this.props.selectArtKey(key);
   }
 
-  handleSaveFile() {
-
-  }
-  
     handleOpenClick(e) {
       this.setState({showFiles:true, fileMenuOpen:false});
     }
@@ -84,7 +89,7 @@ class Menu extends Component {
 
     menuOption = (props)=>  {
         let item = props.item;
-        let defaultClasses = 'w3-bar-item w3-button'
+        let defaultClasses = 'menuItem w3-bar-item w3-button'
         let classList = props.classList ? defaultClasses + ' ' +props.classList : defaultClasses;
 
         return <div className={classList} key={item} name={item} onClick={this.handleClick}>{item}</div>;
