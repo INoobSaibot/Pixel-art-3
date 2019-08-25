@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import './game.css';
 import Board from '../Board/Board.js'
 import illuminatiGraphic from '../../assets/illum.png'
-//import bubbleSound from '../../assets/zapsplat_cartoon_bubbles_001_26516.mp3'
+import illuminatiSVG from '../../assets/noun_illuminati_142795.svg'
+import bubbleSound from '../../assets/zapsplat_cartoon_bubbles_001_26516.mp3'
 import illumSong from '../../assets/The X Files theme.mp3'
 import boom from '../../assets/Explosion 2-SoundBible.com-1641389556.mp3';
 import FileMenuButton from '../Buttons/FileMenuButton/FileMenuButton.js'
@@ -157,6 +158,7 @@ class Game extends Component {
       let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
       let iconStyle = {fontSize:'35px', width:'38px'};
       let imgSrc = illuminatiGraphic;
+      imgSrc=illuminatiSVG
 
       return (
         <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
