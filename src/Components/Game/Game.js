@@ -156,6 +156,7 @@ class Game extends Component {
     }
     IlluminatiButton(props) {
       let style= props.selected ? {borderColor: 'yellow'} : {borderColor:''};
+      style.overflow='hidden';
       let iconStyle = {fontSize:'35px', width:'38px'};
       let imgSrc = illuminatiGraphic;
       imgSrc=illuminatiSVG

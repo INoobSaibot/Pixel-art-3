@@ -2,9 +2,9 @@
   display: flex;
 }
 
-.column {
-  flex: 33.33%;
-  padding: 5px;
+.board-row {
+  margin-bottom:-6px;
+  border-bottom:1px;
 }
 
 .App {
@@ -19,18 +19,14 @@
 .square {
   background: #fff;
   border: 1px solid #999;
-  float: left;
+  /*float: left;*/
   font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
   height: 34px;
   margin-right: -1px;
-  margin-top: -1px;
   padding: 0;
-  text-align: center;
   width: 34px;
+  
 }
-
 
 .game {
   background-color: #282c34;
