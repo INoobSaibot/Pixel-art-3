@@ -10,14 +10,12 @@ class FileMenuButton extends Component {
       this.state = {
         showMenu:true
       }
-      this.options = ['new','open','save','save as'];
-      
     }
     
     render() {
         let style= {height:'50px'};
         let iconStyle = {fontSize:'44px'};
-        const menuOptions = <Menu options={this.options} handleClick={this.handleClick}
+        const menuOptions = <Menu handleClick={this.handleClick}
          selectArtKey={this.props.selectArtKey} handleSave={this.props.handleSave} new={this.props.new}/>;
 
         return (
@@ -32,33 +30,6 @@ class FileMenuButton extends Component {
 
     handleClick = (e) => {
         this.setState({showMenu: !this.state.showMenu})
-    }
-
-    getArtList() {
-        let arts = [];
-        this.forEachKey(arts);
-        return arts;
-    }
-    forEachKey(arr) {
-        let localStorage = window.localStorage;
-        for (var i = 0; i < localStorage.length; i++) {
-          arr.push(localStorage.key(i));
-        }
-      }
-    
-    RenderArtList = (props) => {
-        const arts = this.getArtList();
-        
-        const entries = arts.map( (entry) => {
-          return <this.ArtListItem item={entry} key={entry}/>;
-          
-        })
-        return entries
-    }
-
-    ArtListItem = (props)=>  {
-        let item = props.item;
-        return <div className="w3-bar-item w3-button" key={item} value={item} onClick={this.handleClick}>Art {item}</div>;
     }
 }
 

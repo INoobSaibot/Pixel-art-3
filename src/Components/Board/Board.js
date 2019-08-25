@@ -109,8 +109,10 @@ class Board extends Component {
     }
 
     saveArt = (props) => {
+        //if(this.state.name === 'undefined'){return}
         let localStorage = window.localStorage;
         let key = this.state.name;
+        if(key==='undefined') {alert('undefined key')}
         let model = this.state;
         let saveAs = props ==="saveAs";
 

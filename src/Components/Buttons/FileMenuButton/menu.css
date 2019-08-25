@@ -3,11 +3,28 @@
     float: left;
     font-size: 28px;
     font-weight: bold;
+    font-weight: 100;
+    font-size: 20px;
+}
+.backText {
+    font-weight: 100;
+    font-size: 20px;
 }
 
 .menu {
     background-color:rgba(0,0,0,0.4);
+    /*override .w3-dropdown-content display:none && hover:display inline-block*/
+    display: inline;
 }
 .menuItem {
     color:white;
 }
+
+/* The Delete Button */
+.delete {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
