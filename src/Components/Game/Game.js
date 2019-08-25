@@ -138,7 +138,7 @@ class Game extends Component {
       let iconClasses = props.selected ? "fa fa-eraser shakingIcon" : "fa fa-eraser";
 
       return (
-        <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
+        <button className='btn btn-default row toolButton' style={style} onClick={props.handleClick} value={props.value}>
           <i className={iconClasses} style={iconStyle}></i>
         </button>
       )
@@ -161,7 +161,7 @@ class Game extends Component {
       imgSrc=illuminatiSVG
 
       return (
-        <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
+        <button className='btn btn-default row toolButton' style={style} onClick={props.handleClick} value={props.value}>
           <i className=""><img style={iconStyle} src={imgSrc} alt={"open file button, img of 3.5inch disk"}></img></i>
         </button>
       )
@@ -174,7 +174,7 @@ class Game extends Component {
       let bucketClasses = props.selected ? "fa fa-bitbucket pouringBucket" : "fa fa-bitbucket";
 
       return (
-        <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
+        <button className='btn btn-default row toolButton' style={style} onClick={props.handleClick} value={props.value}>
           <i className={bucketClasses} style={iconStyle}></i>
         </button>
       )
@@ -195,7 +195,7 @@ class Game extends Component {
         }
         
         return (
-        <button className='btn row toolButton' style={style} onClick={this.clearClick} value={props.value}>
+        <button className='btn btn-default row toolButton' style={style} onClick={this.clearClick} value={props.value}>
           <i className={iconClasses} style={iconStyle}></i>
         </button>
       )

@@ -19,8 +19,8 @@ class FileMenuButton extends Component {
          selectArtKey={this.props.selectArtKey} handleSave={this.props.handleSave} new={this.props.new}/>;
 
         return (
-          <div className="w3-dropdown-hover">
-            <button className='btn row toolButton' style={style} onClick={this.handleClick}>
+          <div className="">
+            <button className='btn btn-default row toolButton' style={style} onClick={this.handleClick}>
               <i className="fa fa-save" style={iconStyle}><span style={{display:'block',fontSize:'15px',marginTop:'-7px'}}>menu</span></i>
               
             </button>
