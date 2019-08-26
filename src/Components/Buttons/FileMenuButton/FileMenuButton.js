@@ -14,18 +14,17 @@ class FileMenuButton extends Component {
     
     render() {
         let style= {height:'100%'};
-        let iconStyle = {fontSize:'44px'};
+        let iconStyle = {fontSize:'35px', width:'38px'};
         const menuOptions = <Menu handleClick={this.handleClick}
          selectArtKey={this.props.selectArtKey} handleSave={this.props.handleSave} new={this.props.new}/>;
 
         return (
-          <div className="">
+          <span className="">
             <button className='btn btn-default row toolButton' style={style} onClick={this.handleClick}>
-              <i className="fa fa-save" style={iconStyle}><span style={{display:'block',fontSize:'15px',marginTop:'-7px'}}>menu</span></i>
-              
+              <i className="fa fa-save" style={iconStyle}></i>
             </button>
               {this.state.showMenu && menuOptions}
-          </div>
+          </span>
         )
     }
 

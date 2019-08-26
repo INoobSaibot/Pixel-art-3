@@ -30,7 +30,6 @@ class Game extends Component {
         this.setState({illuminatiPlaying:false});
       }
       this.boom = new Audio(boom);
-
     }
 
     handleClick = (e) =>{
@@ -45,27 +44,23 @@ class Game extends Component {
       let fileMenuButton = <FileMenuButton selectArtKey={this.selectArtKey} handleSave={this.saveClicked} new={this.new}/>;
 
       const pallette = this.colors.map((item) => {
-        return (
-                <span className='' key={item}>
+        return (<span className='' key={item}>
                   <Square value={item} background={item} handleClick={this.handleClick}>{item}</Square>
-                </span>
-        )
-      })
+                </span>)
+                })
 
       return (
         <div className="game">
-        <div className="pallette">{pallette}</div>
-          <div className="game-board">
-            <div className="row">
-              
-              <div className="">
+          <span className="">
+                {fileMenuButton}
                 {eraser}
                 {fillButton}
                 {clearButton}
                 {illuminati}
-                {fileMenuButton}
-              </div>
-            
+              </span>
+        <div className="pallette">{pallette}</div>
+          <div className="game-board">
+            <div className="">
             <div className="column"> 
             <Board color={this.state.paintColor} eraser={this.state.eraserSelected} 
                 fillButton={this.state.fillButtonSelected} gameState={this.state}

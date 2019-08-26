@@ -1,31 +1,21 @@
-.row {
-  display: flex;
+:root{
+  --width:34px;
+  --height:var(--width);
 }
 
 .board-row {
   margin-bottom:-6px;
+  margin-top:-6px;
   border-bottom:1px;
-}
-
-.App {
-  border: 2px solid black;
-  text-align: center;
-  background: #f5f5f5;
-  color: #333;
-  margin: 20px;
-  padding: 20px;
 }
 
 .square {
   background: #fff;
   border: 1px solid #999;
-  /*float: left;*/
-  font-size: 24px;
-  height: 34px;
   margin-right: -1px;
   padding: 0;
-  width: 34px;
-  
+  width: var(--width);
+  height: var(--height);
 }
 
 .game {

@@ -12,9 +12,9 @@
 }
 
 .menu {
-    background-color:rgba(0,0,0,0.4);
+    background-color:rgba(0,0,0,0.8);
     /*override .w3-dropdown-content display:none && hover:display inline-block*/
-    display: inline;
+    display: block;
 }
 .menuItem {
     color:white;

@@ -6,10 +6,8 @@ import Game from './Components/Game/Game'
 
 class App extends Component {
     render() {
-      return (<div>
-                <div className="App">Hello Pixel Artist!</div>
-                  <Game />
-              </div>
+      return (
+              <Game />
       );
     }
   }
