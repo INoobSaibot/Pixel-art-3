@@ -189,8 +189,14 @@ class Board extends Component {
   }
 
   function Square(props) {    
+    let id = generateID(props.row, props.column);
     return (
-          <button className="square" row={props.row} column={props.column} value={props.value} onClick={props.handleClick} style={{background:props.background}}></button>
+          <button id={id} className="square" row={props.row} column={props.column} value={props.value} onClick={props.handleClick} style={{background:props.background}}></button>
         )
+    }
+
+    function generateID(row, column){
+        let id = 'row:'+row.toString() + 'col:'+ column.toString();
+        return id;
     }
 export default Board;
