@@ -19,7 +19,7 @@ class Menu extends Component {
         const options = <this.renderMenu options={this.options} handleClick={this.handleClick}/>;
         const fileList = <this.renderMenu options={this.getFileList()} handleClick={this.handleClick} classList={'file'}/>;
         const deleteFiles = <this.renderMenu options={this.getdeleteList()} handleClick={this.handleClick} classList={'deleteFile'}/>;
-        const back = <span className="back" onClick={this.clickBack}>&lt;<span className="backText">-back</span></span>
+        const back = <span id='menu-back' className="back" onClick={this.clickBack}>&lt;<span className="backText">-back</span></span>
 
         return (
         <div className="menu w3-dropdown-content w3-bar-block w3-border">
@@ -69,6 +69,7 @@ class Menu extends Component {
   }
     
   renderMenu = (props) => {
+    console.log(props)
       const menu = props.options.map( (entry) => {
         return <this.menuOption item={entry} key={entry} classList={props.classList}></this.menuOption>;
       })
@@ -124,7 +125,7 @@ class Menu extends Component {
         let defaultClasses = 'menuItem w3-bar-item w3-button'
         let classList = props.classList ? defaultClasses + ' ' +props.classList : defaultClasses;
 
-        return <div className={classList} key={item} name={item} onClick={this.handleClick}>{item}{deleteFiles}</div>;
+        return <div id={item} className={classList} key={item} name={item} onClick={this.handleClick}>{item}{deleteFiles}</div>;
     }
 }
 

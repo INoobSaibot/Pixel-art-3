@@ -28,7 +28,7 @@ class Board extends Component {
   
       return (
         <div>
-          <div>Name:{this.props.currentlyOpenArt}</div>
+          <div id='art-name-container'>Name:<span id='art-name'> {this.props.currentlyOpenArt}</span></div>
             {grid}
         </div>
       );
