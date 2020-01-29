@@ -13,6 +13,7 @@ class Menu extends Component {
         fileList:['for','me']
       }
       this.options = ['new','open','save','save as','delete'];
+      this.node = undefined;
     }
     
     render() {
@@ -22,13 +23,35 @@ class Menu extends Component {
         const back = <span id='menu-back' className="back" onClick={this.clickBack}>&lt;<span className="backText">-back</span></span>
 
         return (
-        <div className="menu w3-dropdown-content w3-bar-block w3-border">
+        <div ref={node => this.node = node} className="menu w3-dropdown-content w3-bar-block w3-border">
           {this.state.fileMenuOpen && options}
           {(this.state.showFiles || this.state.showDeleteList) && back}
           {this.state.showFiles && fileList}
           {this.state.showDeleteList && deleteFiles}
         </div>
         )
+    }
+
+    componentWillMount() {
+      document.addEventListener('mousedown', this.handleOutsideClick, false);
+    }
+
+    componentWillUnmount() {
+      document.removeEventListener('mousedown', this.handleOutsideClick, false);
+    }
+
+    handleOutsideClick = (e) => {
+      if (this.node.contains(e.target)) {
+        // the click is inside, chill
+        return;
+      }
+      
+      // the click is outside, do something
+      this.handleClickOutside();
+    }
+
+    handleClickOutside(){
+      this.props.outsideClick();
     }
 
     handleClick = (e) => {
@@ -69,7 +92,6 @@ class Menu extends Component {
   }
     
   renderMenu = (props) => {
-    console.log(props)
       const menu = props.options.map( (entry) => {
         return <this.menuOption item={entry} key={entry} classList={props.classList}></this.menuOption>;
       })

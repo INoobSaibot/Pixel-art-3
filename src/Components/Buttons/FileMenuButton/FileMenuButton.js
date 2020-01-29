@@ -16,7 +16,7 @@ class FileMenuButton extends Component {
         let style= {height:'100%'};
         let iconStyle = {fontSize:'35px', width:'38px'};
         const menuOptions = <Menu handleClick={this.handleClick}
-         selectArtKey={this.props.selectArtKey} handleSave={this.props.handleSave} new={this.props.new}/>;
+         selectArtKey={this.props.selectArtKey} handleSave={this.props.handleSave} new={this.props.new} outsideClick={this.closeMenu}/>;
 
         return (
           <span className="">
@@ -30,6 +30,10 @@ class FileMenuButton extends Component {
 
     handleClick = (e) => {
         this.setState({showMenu: !this.state.showMenu})
+    }
+
+    closeMenu = () => {
+      this.setState({showMenu: false});
     }
 }
 
