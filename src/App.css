@@ -3,12 +3,6 @@
   --height:var(--width);
 }
 
-.board-row {
-  margin-bottom:-6px;
-  margin-top:-6px;
-  border-bottom:1px;
-}
-
 .square {
   background: #fff;
   border: 1px solid #999;

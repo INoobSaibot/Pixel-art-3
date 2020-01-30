@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import HTTPService from '../../HTTPService/HTTPService'
+import './board.css'
 
 class Board extends Component {
     constructor(props) {

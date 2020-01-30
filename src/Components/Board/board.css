@@ -1,0 +1,9 @@
+.board-row {
+    width: 1200px;
+}
+
+.board-row {
+    margin-bottom:-6px;
+    margin-top:-6px;
+    border-bottom:1px;
+  }
