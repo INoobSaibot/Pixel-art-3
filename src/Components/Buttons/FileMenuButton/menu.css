@@ -15,6 +15,9 @@
     background-color:rgba(0,0,0,0.8);
     /*override .w3-dropdown-content display:none && hover:display inline-block*/
     display: block;
+
+    box-shadow: 5px 10px 8px #888888;
+
 }
 .menuItem {
     color:white;

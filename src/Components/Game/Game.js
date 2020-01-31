@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import './index.css';
 import './game.css';
 import Board from '../Board/Board.js'
 import illuminatiGraphic from '../../assets/illum.png'
@@ -8,6 +7,7 @@ import bubbleSound from '../../assets/zapsplat_cartoon_bubbles_001_26516.mp3'
 import illumSong from '../../assets/The X Files theme.mp3'
 import boom from '../../assets/Explosion 2-SoundBible.com-1641389556.mp3';
 import FileMenuButton from '../Buttons/FileMenuButton/FileMenuButton.js'
+import Pallette from '../../Components/Pallette/pallette'
 
 
 class Game extends Component {
@@ -34,6 +34,7 @@ class Game extends Component {
 
     handleClick = (e) =>{
         this.setState({paintColor: e.target.value})
+        console.log(e)
     }
     
     render() {
@@ -43,22 +44,10 @@ class Game extends Component {
       let illuminati = <this.IlluminatiButton handleClick={this.illuminatiClicked} selected={this.state.illuminatiPlaying} audio={this.audio}/>;
       let fileMenuButton = <FileMenuButton selectArtKey={this.selectArtKey} handleSave={this.saveClicked} new={this.new}/>;
 
-      const pallette = this.colors.map((item) => {
-        return (<span className='' key={item}>
-                  <Square value={item} background={item} handleClick={this.handleClick}>{item}</Square>
-                </span>)
-                })
-
       return (
         <div className="game">
-          <span className="">
-                {fileMenuButton}
-                {eraser}
-                {fillButton}
-                {clearButton}
-                {illuminati}
-              </span>
-        <div className="pallette">{pallette}</div>
+          <span className="">{fileMenuButton}{eraser}{fillButton}{clearButton}{illuminati}</span>
+        <Pallette colors={this.colors} handleClick={this.handleClick}></Pallette>
           <div className="game-board">
             <div className="">
             <div className="column"> 
