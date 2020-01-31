@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Square from '../../Components/Square/square'
+import './pallete.css'
 
 
 class Pallette extends Component {
@@ -10,9 +11,11 @@ class Pallette extends Component {
     }
     
     render() {
-        const pallette = this.props.colors.map((item) => {
+        let colors = this.props.colors;
+        let props = this.props;
+        const pallette = colors.map((item) => {
             return (<span className='' key={item}>
-                      <Square className='pallette' value={item} background={item} handleClick={this.props.handleClick}>{item}</Square>
+                      <button className="square pallette-choice" row={props.row} column={props.column} value={item} onClick={props.handleClick} style={{background:item}}></button>
                     </span>)
                     })
         return <div>{pallette}</div>

@@ -34,7 +34,6 @@ class Game extends Component {
 
     handleClick = (e) =>{
         this.setState({paintColor: e.target.value})
-        console.log(e)
     }
     
     render() {
