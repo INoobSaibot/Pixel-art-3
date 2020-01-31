@@ -30,6 +30,7 @@ class Game extends Component {
         this.setState({illuminatiPlaying:false});
       }
       this.boom = new Audio(boom);
+      this.paintingSound = new Audio(bubbleSound);
     }
 
     handleClick = (e) =>{
@@ -54,7 +55,7 @@ class Game extends Component {
                 fillButton={this.state.fillButtonSelected} gameState={this.state}
                 setClearHandler={this.setClearClickHandler} setSaveHandler={this.setSaveHandler}
                 setOpenItemHandler={this.setOpenItemHandler} setNewHandler={this.setNewHandler} currentlyOpenArt={this.state.currentlySelectedArt}
-                changeCurrentArt={this.changeCurrentArt}/>
+                changeCurrentArt={this.changeCurrentArt} playPaintFillSound={this.playPaintFillSound}/>
             </div>
 
           </div>
@@ -198,12 +199,10 @@ class Game extends Component {
         this.handleClearClick = handlerFromBoard;
     }
 
-  }
+    playPaintFillSound = () => {
+      this.paintingSound.play();
+    }
 
-function Square(props) {    
-  return (
-        <button className="square" row={props.row} column={props.column} value={props.value} onClick={props.handleClick} style={{background:props.background}}></button>
-      )
   }
 
 export default Game;

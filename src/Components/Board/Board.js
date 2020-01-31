@@ -41,6 +41,7 @@ class Board extends Component {
     }
 
     handleClick = (e) =>{
+        this.props.playPaintFillSound();
         let pixelData = this.state.pixelData;
         let clickedPixel = e.target;
         let row = parseInt(clickedPixel.getAttribute('row'));
