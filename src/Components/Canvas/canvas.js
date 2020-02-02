@@ -16,11 +16,15 @@ class Canvas extends Component {
         };
 
         return (
-              <div>
+              <div className='canvas-download-container'>
                   <a className='download' download={fileName} href={canvasHref}>Download</a>
                   <canvas ref='canvas' width={300} height={300} className='canvas'></canvas>
               </div>
         );
+      }
+
+      componentDidMount() {
+        this.props.board.exportData();
       }
 
     exportCanvasAsPng(){

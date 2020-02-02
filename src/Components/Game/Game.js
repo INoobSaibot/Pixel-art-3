@@ -55,7 +55,7 @@ class Game extends Component {
                 fillButton={this.state.fillButtonSelected} gameState={this.state}
                 setClearHandler={this.setClearClickHandler} setSaveHandler={this.setSaveHandler}
                 setOpenItemHandler={this.setOpenItemHandler} setNewHandler={this.setNewHandler} currentlyOpenArt={this.state.currentlySelectedArt}
-                changeCurrentArt={this.changeCurrentArt} playPaintFillSound={this.playPaintFillSound}/>
+                changeCurrentArt={this.changeCurrentArt} playPaintFillSound={this.playPaintFillSound} board={this} />
             </div>
 
           </div>
@@ -64,6 +64,10 @@ class Game extends Component {
           </div>
         </div>
       );
+    }
+
+    exportData = () => {
+      this.setState({})
     }
 
     changeCurrentArt = (name) => {

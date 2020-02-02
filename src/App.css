@@ -3,15 +3,6 @@
   --height:var(--width);
 }
 
-.square {
-  background: #fff;
-  border: 1px solid #999;
-  margin-right: -1px;
-  padding: 0;
-  width: var(--width);
-  height: var(--height);
-}
-
 .game {
   background-color: #282c34;
   min-height: 100vh;

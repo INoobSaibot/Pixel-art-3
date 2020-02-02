@@ -3,3 +3,8 @@
 .canvas {
     display: none;
 }
+
+
+.canvas-download-container {
+    display: inline;
+}

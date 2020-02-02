@@ -22,46 +22,26 @@ class Board extends Component {
         this.props.setSaveHandler(this.saveArt);
         this.props.setOpenItemHandler(this.openArt);
         this.props.setNewHandler(this.new);
+
+        const mq = window.matchMedia( "(min-width: 500px)" );
+        if (mq.matches) {
+            // window width is at least 500px
+        } else {
+            // window width is less than 500px
+        }
+        console.log(document.documentElement.clientWidth);
+
+        window.addEventListener('resize', this.displayWindowResize);
     }
 
-    
-
-    drawOnCanvas(ctx, row, column) {
-        let width = 10;
-        let height = 10;
-        let x_start = width * column; 
-        let y_start = height * row;
-        ctx.fillRect(x_start, y_start, width, height);
+    displayWindowResize = ($event) => {
+        console.log($event)
+        const windowWidth = $event.target.innerWidth;
+        this.setState({windowWidth:windowWidth})
     }
 
-    exportCanvasAsPng(){
-        const canvas = this.refs.canvas;
-        const MIME_TYPE = "image/png";
-        const imgURL = canvas.toDataURL(MIME_TYPE);
-
-        this.setState({canvasHref: imgURL})
-    }
-
-    canvasClick = ()=>{
-        const canvas = this.refs.canvas;
-        const ctx = canvas.getContext("2d");
-
-        const rows = this.state.pixelData;
-        let row_number = -1;
-        rows.forEach( (rowOfPixels) => {
-            let column_number = 0;
-            row_number++;
-            rowOfPixels.forEach( pixel => {
-                if (pixel) {
-                    ctx.fillStyle = pixel;
-                    this.drawOnCanvas(ctx, row_number, column_number)
-                }
-                column_number++;
-            })
-        })
-
-        this.exportCanvasAsPng();
-
+    sizing =(e) => {
+        console.log(e)
     }
 
     render() {
@@ -72,8 +52,8 @@ class Board extends Component {
         <div>
           <div id='art-name-container'>Name:<span id='art-name'> {this.props.currentlyOpenArt}</span></div>
             <div>
-                <Canvas pixelData={this.state.pixelData} artName={this.props.currentlyOpenArt}></Canvas>
-                {grid}
+                <Canvas pixelData={this.state.pixelData} artName={this.props.currentlyOpenArt} board={this.props.board}></Canvas>
+                <div className='grid'>{grid}</div>
             </div>
         </div>
       );
@@ -199,11 +179,14 @@ class Board extends Component {
         let pixelDataModel = JSON.parse(arrFromLocalStorage);
         this.setState(pixelDataModel);
     }
+
     loopyRenderRow(r,c){
         //also used to popular pixelData array to all empty value 2d array grid,
         // will refactro, for 2 methods, with a common paramed method
         let pixelArrayHasInitialPopulationComplete = this.state.pixelData[r-1];
         let handleClick = this.handleClick
+
+        const pixelWidth = properlySizePixelButtons(c)
         
         let grid = []
         let gridState = [];
@@ -220,7 +203,7 @@ class Board extends Component {
                 background = this.state.pixelData[i][j];
             }
 
-            children.push(<Square background={background} row={i} column={j}
+            children.push(<Square background={background} row={i} column={j} pixelWidth={pixelWidth}
                 value={value} handleClick={handleClick} key={i.toString() + "X" + j.toString()} />)
 
             childState.push('');
@@ -236,13 +219,23 @@ class Board extends Component {
 
   function Square(props) {    
     let id = generateID(props.row, props.column);
+    const pixelWidth = props.pixelWidth;
+    const pixelHeight = pixelWidth;
     return (
-          <button id={id} className="square" row={props.row} column={props.column} value={props.value} onClick={props.handleClick} style={{background:props.background}}></button>
+          <button id={id} className="square" row={props.row} column={props.column} value={props.value} onClick={props.handleClick} style={{background:props.background, width:pixelWidth, height:pixelHeight}}></button>
         )
     }
 
     function generateID(row, column){
         let id = 'row:'+row.toString() + 'col:'+ column.toString();
         return id;
+    }
+
+    function properlySizePixelButtons(numberOfColumns) {
+        const width = document.documentElement.clientWidth;
+        
+        const calculatedPixelWidth = Math.floor(width / numberOfColumns);        
+        console.log(calculatedPixelWidth)
+        return calculatedPixelWidth;
     }
 export default Board;
