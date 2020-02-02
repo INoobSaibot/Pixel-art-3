@@ -23,40 +23,43 @@ class Board extends Component {
         this.props.setOpenItemHandler(this.openArt);
         this.props.setNewHandler(this.new);
 
-        const mq = window.matchMedia( "(min-width: 500px)" );
-        if (mq.matches) {
-            // window width is at least 500px
-        } else {
-            // window width is less than 500px
-        }
-        console.log(document.documentElement.clientWidth);
+        // const mq = window.matchMedia( "(min-width: 500px)" );
+        // if (mq.matches) {
+        //     // window width is at least 500px
+        // } else {
+        //     // window width is less than 500px
+        // }
 
         window.addEventListener('resize', this.displayWindowResize);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.displayWindowResize);
+    }
+
     displayWindowResize = ($event) => {
-        console.log($event)
         const windowWidth = $event.target.innerWidth;
         this.setState({windowWidth:windowWidth})
     }
 
-    sizing =(e) => {
-        console.log(e)
-    }
-
     render() {
-      const gridAndState = this.loopyRenderRow(30,30);
-      const grid = gridAndState.grid;
-  
-      return (
-        <div>
-          <div id='art-name-container'>Name:<span id='art-name'> {this.props.currentlyOpenArt}</span></div>
+        let columns = 14;
+        const widthCheckLimits = 768; // px wide
+        if (this.state.windowWidth > widthCheckLimits) {
+            columns = 30;
+        }
+        const gridAndState = this.loopyRenderRow(30, columns);
+        const grid = gridAndState.grid;
+    
+        return (
             <div>
-                <Canvas pixelData={this.state.pixelData} artName={this.props.currentlyOpenArt} board={this.props.board}></Canvas>
-                <div className='grid'>{grid}</div>
+            <div id='art-name-container'>Name:<span id='art-name'> {this.props.currentlyOpenArt}</span></div>
+                <div>
+                    <Canvas pixelData={this.state.pixelData} artName={this.props.currentlyOpenArt} board={this.props.board}></Canvas>
+                    <div className='grid'>{grid}</div>
+                </div>
             </div>
-        </div>
-      );
+        );
     }
 
     new = () => {
@@ -233,9 +236,10 @@ class Board extends Component {
 
     function properlySizePixelButtons(numberOfColumns) {
         const width = document.documentElement.clientWidth;
-        
         const calculatedPixelWidth = Math.floor(width / numberOfColumns);        
-        console.log(calculatedPixelWidth)
+        
         return calculatedPixelWidth;
     }
+
+
 export default Board;
