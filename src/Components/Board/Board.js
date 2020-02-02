@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import HTTPService from '../../HTTPService/HTTPService'
+import Canvas from '../Canvas/canvas'
 import './board.css'
 
 class Board extends Component {
@@ -23,6 +24,46 @@ class Board extends Component {
         this.props.setNewHandler(this.new);
     }
 
+    
+
+    drawOnCanvas(ctx, row, column) {
+        let width = 10;
+        let height = 10;
+        let x_start = width * column; 
+        let y_start = height * row;
+        ctx.fillRect(x_start, y_start, width, height);
+    }
+
+    exportCanvasAsPng(){
+        const canvas = this.refs.canvas;
+        const MIME_TYPE = "image/png";
+        const imgURL = canvas.toDataURL(MIME_TYPE);
+
+        this.setState({canvasHref: imgURL})
+    }
+
+    canvasClick = ()=>{
+        const canvas = this.refs.canvas;
+        const ctx = canvas.getContext("2d");
+
+        const rows = this.state.pixelData;
+        let row_number = -1;
+        rows.forEach( (rowOfPixels) => {
+            let column_number = 0;
+            row_number++;
+            rowOfPixels.forEach( pixel => {
+                if (pixel) {
+                    ctx.fillStyle = pixel;
+                    this.drawOnCanvas(ctx, row_number, column_number)
+                }
+                column_number++;
+            })
+        })
+
+        this.exportCanvasAsPng();
+
+    }
+
     render() {
       const gridAndState = this.loopyRenderRow(30,30);
       const grid = gridAndState.grid;
@@ -30,7 +71,10 @@ class Board extends Component {
       return (
         <div>
           <div id='art-name-container'>Name:<span id='art-name'> {this.props.currentlyOpenArt}</span></div>
-            {grid}
+            <div>
+                <Canvas pixelData={this.state.pixelData} artName={this.props.currentlyOpenArt}></Canvas>
+                {grid}
+            </div>
         </div>
       );
     }

@@ -2,7 +2,7 @@
     width: 34px;
     height: 34px;
     margin:0px;
-    transition: width .5s, height .5s, margin .5s, box-shadow .5s;
+    /* transition: width .5s, height .5s, margin .5s, box-shadow .5s; */
   }
   
   .pallette-choice:hover {
