@@ -1,13 +1,11 @@
 .board-row {
     width: 100%;
-
 }
 
 .board-row {
     margin-bottom:-6px;
     margin-top:-6px;
     border-bottom:1px;
-
   }
 
   .square {
