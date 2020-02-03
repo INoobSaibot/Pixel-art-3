@@ -45,7 +45,8 @@ class Board extends Component {
     render() {
         let columns = 14;
         const widthCheckLimits = 768; // px wide
-        if (this.state.windowWidth > widthCheckLimits) {
+        const width = document.documentElement.clientWidth;
+        if (width > widthCheckLimits) {
             columns = 30;
         }
         const gridAndState = this.loopyRenderRow(30, columns);
