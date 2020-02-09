@@ -23,10 +23,6 @@ class Canvas extends Component {
         );
       }
 
-      componentDidMount() {
-        this.props.board.exportData();
-      }
-
     exportCanvasAsPng(){
         const canvas = this.refs.canvas;
         const MIME_TYPE = "image/png";
@@ -56,6 +52,7 @@ class Canvas extends Component {
     }
 
     clearCanvas(canvas) {
+        if(canvas.getContext('2d'))
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
     }
 

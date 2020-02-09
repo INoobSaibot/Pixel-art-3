@@ -17,6 +17,10 @@
     height: var(--height);
   }
 
-  .grid {
-      
+  .undoButton {
+    color:purple;
+  }
+
+  .redoButton {
+    color:purple;
   }

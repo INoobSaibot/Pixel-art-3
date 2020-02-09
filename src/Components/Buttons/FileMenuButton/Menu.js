@@ -32,7 +32,7 @@ class Menu extends Component {
         )
     }
 
-    componentWillMount() {
+    componentDidMount() {
       document.addEventListener('mousedown', this.handleOutsideClick, false);
     }
 

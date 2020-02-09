@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './game.css';
-import Board from '../Board/Board.js'
+import Board from '../Board/Board';
 import illuminatiGraphic from '../../assets/illum.png'
 import illuminatiSVG from '../../assets/noun_illuminati_142795.svg'
 import bubbleSound from '../../assets/zapsplat_cartoon_bubbles_001_26516.mp3'
@@ -8,6 +8,8 @@ import illumSong from '../../assets/The X Files theme.mp3'
 import boom from '../../assets/Explosion 2-SoundBible.com-1641389556.mp3';
 import FileMenuButton from '../Buttons/FileMenuButton/FileMenuButton.js'
 import Pallette from '../../Components/Pallette/pallette'
+import { EventEmitter } from '../../EventEmitter/events'
+
 
 
 class Game extends Component {
@@ -33,8 +35,8 @@ class Game extends Component {
       this.paintingSound = new Audio(bubbleSound);
     }
 
-    handleClick = (e) =>{
-        this.setState({paintColor: e.target.value})
+    componentDidMount() {
+      EventEmitter.subscribe('art-switched', this.changeCurrentArt);
     }
     
     render() {
@@ -53,9 +55,8 @@ class Game extends Component {
             <div className="column"> 
             <Board color={this.state.paintColor} eraser={this.state.eraserSelected} 
                 fillButton={this.state.fillButtonSelected} gameState={this.state}
-                setClearHandler={this.setClearClickHandler} setSaveHandler={this.setSaveHandler}
-                setOpenItemHandler={this.setOpenItemHandler} setNewHandler={this.setNewHandler} currentlyOpenArt={this.state.currentlySelectedArt}
-                changeCurrentArt={this.changeCurrentArt} playPaintFillSound={this.playPaintFillSound} board={this} />
+                currentlyOpenArt={this.state.currentlySelectedArt}
+                playPaintFillSound={this.playPaintFillSound} />
             </div>
 
           </div>
@@ -66,9 +67,9 @@ class Game extends Component {
       );
     }
 
-    exportData = () => {
-      this.setState({})
-    }
+    handleClick = (e) =>{
+      this.setState({paintColor: e.target.value})
+  }
 
     changeCurrentArt = (name) => {
       this.setState({currentlySelectedArt:name})
@@ -76,31 +77,20 @@ class Game extends Component {
 
     selectArtKey = (key) => {
       this.setState({currentlySelectedArt: key})
-      this.handleItemClicked(key);
+      EventEmitter.dispatch('openArtClicked', key)
     }
 
-    setOpenItemHandler = (handlerFromBoard) => {
-      this.handleItemClicked = handlerFromBoard;
-    }
     itemClicked = () => {
       this.handleItemClicked();
     }
 
-    
-    setSaveHandler = (handlerFromBoard) => {
-      this.handleSaveClicked = handlerFromBoard;
-    }
-
-    new = () => {
-      this.handleSaveClicked();
-      this.handleNew();
-    }
-    setNewHandler = (handlerFromBoard) => {
-      this.handleNew = handlerFromBoard;
+    new = (e) => {
+      EventEmitter.dispatch('newArtClicked', e);
     }
     
-    saveClicked = (e) => {
-        this.handleSaveClicked(e);
+    saveClicked = (saveOrSaveAs) => {
+      console.log(saveOrSaveAs)
+        EventEmitter.dispatch('saveClicked', saveOrSaveAs)
     }
     
     SaveButton(props) {
@@ -190,19 +180,21 @@ class Game extends Component {
       )
     }
 
-    clearClick = () => {
+    clearButtonClicked = (e) => {
+      EventEmitter.dispatch('clearBoardClicked', e);
+    }
+
+    clearClick = (e) => {
       this.setState({clearCountDown:true});
+
       setTimeout( () => {
-        this.handleClearClick();
+        this.clearButtonClicked(e)
         this.boom.play();
         this.setState({clearCountDown:false})
       },1000)
         
     }
-    setClearClickHandler = (handlerFromBoard) => {
-        this.handleClearClick = handlerFromBoard;
-    }
-
+    
     playPaintFillSound = () => {
       this.paintingSound.play();
     }
