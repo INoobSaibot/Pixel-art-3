@@ -6,12 +6,12 @@ import Menu from './Menu';
 class FileMenuButton extends Component {
     constructor(props) {
       super(props);
-      
+
       this.state = {
         showMenu:true
       }
     }
-    
+
     render() {
         let style= {height:'100%'};
         let iconStyle = {fontSize:'35px', width:'38px'};

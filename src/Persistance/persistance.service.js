@@ -1,7 +1,6 @@
-import { EventEmitter } from '../EventEmitter/events'
+import { EventEmitter } from '../EventEmitter/events';
 
 class PersistanceService {
-  // constructor() {}
 
   save = (props, saveOrSaveAs) => {
         let localStorage = window.localStorage;
@@ -13,7 +12,6 @@ class PersistanceService {
 
         localStorage.setItem(key,value);
         if ((props.props.currentlyOpenArt && !saveAs)) {
-            debugger;
             localStorage.setItem(key,value);
             // saVED!!
         } else {
@@ -28,7 +26,6 @@ class PersistanceService {
             } else {
                 key = artName;
                 localStorage.setItem(key,value);
-                
                 EventEmitter.dispatch('art-switched', key);
             }
 
@@ -47,7 +44,7 @@ class PersistanceService {
         let arrFromLocalStorage = localStorage.getItem(key);
 
         let pixelDataModel = JSON.parse(arrFromLocalStorage);
-        
+
         return pixelDataModel;
     }
 

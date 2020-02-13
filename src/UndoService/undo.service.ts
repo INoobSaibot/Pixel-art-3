@@ -1,10 +1,7 @@
-
-
-
 export default class UndoService {
     static count = 0
     constructor() {
-        // do somehting so only 1 gets made ever
+        // do something so only 1 gets made ever
         UndoService.count = 1;
         this.snaps= [];
         this.currentIndex = 0

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import PersistanceService from '../../Persistance/persistance.service';
-import Canvas from '../Canvas/canvas';
-import './board.css';
 import { EventEmitter } from '../../EventEmitter/events';
+import PersistanceService from '../../Persistance/persistance.service';
+import PixelPositionIDService from '../../UndoService/PixelPositionIDService/pixelPositionIdService';
 import UndoService from '../../UndoService/undo.service';
+import Canvas from '../Canvas/canvas';
+import { Position } from '../CommonInterfaces/commonInterfaces';
+import './board.css';
 
 interface MyProps {
     currentlyOpenArt:any;
@@ -13,9 +15,9 @@ interface MyProps {
     fillButton: boolean;
     color: boolean;
 
-    testOnly: boolean;
+    renderCanvas: boolean;
   }
-  
+
 interface MyState {
     pixelData: any
     windowWidth: number
@@ -32,6 +34,7 @@ class Board extends Component<MyProps, MyState> {
 
     persistance = new PersistanceService();
     undoService = new UndoService();
+    pixelIDService = new PixelPositionIDService();
     mousedown: Boolean = false;
 
     componentDidMount() {
@@ -44,17 +47,10 @@ class Board extends Component<MyProps, MyState> {
         EventEmitter.subscribe('newArtClicked', () => this.new());
 
         window.addEventListener('resize', this.displayWindowResize);
-
-        // drag
-        //window.addEventListener('mousedown', this.touchMove);
-        window.addEventListener('resize', this.displayWindowResize);
-        window.addEventListener('resize', this.displayWindowResize);
-        // end
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.displayWindowResize);
-
     }
 
     onmousedown = ($event: any) => {
@@ -65,21 +61,12 @@ class Board extends Component<MyProps, MyState> {
         this.mousedown = false;
     }
 
-    getPosition = (pixelElement: HTMLElement) => {
-        let rowAndColumn = pixelElement.getAttribute('id').split("__");
-
-        let row = rowAndColumn[0].replace('row_', '');
-        let column = rowAndColumn[1].replace('col_', '');
-        let position = {row:row,column:column};
-
-        return position
-    }
 
     onMouseOver = (e: any) => {
         if(!this.mousedown) return;
 
         let el: HTMLButtonElement = e.target;
-        let pixelPosition = this.getPosition(el);
+        let pixelPosition: Position = this.pixelIDService.getPosition(el);
 
         if(this.mousedown) {
             this.paintPixel(pixelPosition);
@@ -93,7 +80,11 @@ class Board extends Component<MyProps, MyState> {
 
     render() {
         ///
-        const testing_canvasMustBeDisabled:boolean = false; // set this to true for test, this.props.testOnly; 
+        const exportCanvas = <Canvas pixelData={this.state.pixelData} artName={this.props.currentlyOpenArt} board={this.props.board}></Canvas>;
+        // let exportCanvas = <span></span>;
+        // if (this.props.renderCanvas === true) {
+        //     exportCanvas = canvas;
+        // }
         ///
         let columns = 14;
         const widthCheckLimits = 768; // px wide
@@ -104,7 +95,6 @@ class Board extends Component<MyProps, MyState> {
         const gridAndState = this.loopyRenderRow(30, columns);
         const grid = gridAndState.grid;
 
-        const exportCanvas_or_emptySpanForTestingIssue = (testing_canvasMustBeDisabled && <span></span> ) || <Canvas pixelData={this.state.pixelData} artName={this.props.currentlyOpenArt} board={this.props.board}></Canvas>
         const undoButton = <button id='undoId' className='undoButton' data-testid='undo' onClick={this.undoClicked}>undo</button>
         const redoButton = <button id='redoId' className='redoButton' data-testid='redo' onClick={this.redoClicked}>redo</button>
 
@@ -113,7 +103,7 @@ class Board extends Component<MyProps, MyState> {
             <div id='art-name-container'>Name:<span id='art-name'> {this.props.currentlyOpenArt}</span></div>
                 {undoButton} {redoButton}
                 <div>
-                    {exportCanvas_or_emptySpanForTestingIssue}
+                    {exportCanvas}
                     <div className='grid' onMouseUp={this.onMouseUp}onMouseDown={this.onmousedown} >{grid}</div>
                 </div>
             </div>
@@ -148,23 +138,25 @@ class Board extends Component<MyProps, MyState> {
     }
 
     handleClick = (e: any) => {
-        let pixelData = this.state.pixelData;
         let clickedPixel = e.target;
-        let rowAndColumn = clickedPixel.getAttribute('id').split("__");
-
-        let row: number = parseInt(rowAndColumn[0].replace('row_', ''));
-        let column: number = parseInt(rowAndColumn[1].replace('col_', ''));
-        let position = {row:row,column:column};
+        let position: Position = this.pixelIDService.getPosition(clickedPixel);
 
         if (this.props.fillButton) {
-            const targetsColor = pixelData[row][column];
+            const targetsColor = this.getPixelColorByPosition(position);
             this.paintFill(position,targetsColor);
       } else {
-        this.paintPixel(position)
+        this.paintPixel(position);
       }
     }
 
-    paintPixel = (position:any) => {
+    getPixelColorByPosition(position: Position) :string {
+        let pixelData = this.state.pixelData;
+        const targetsColor = pixelData[position.row][position.column];
+
+        return targetsColor;
+    }
+
+    paintPixel = (position: Position) => {
         let eraserSelected = this.props.eraser;
         let color = !eraserSelected ? this.props.color : ''; //paint or eraser
         let pixelData = this.state.pixelData;
@@ -179,7 +171,7 @@ class Board extends Component<MyProps, MyState> {
         this.undoService.store(state.pixelData);
     }
 
-    paintFill = (position: any, matchColor: any) => {
+    paintFill = (position: Position, matchColor: any) => {
         let color = this.props.color;
         let pixelData = this.state.pixelData;
         let neighbors = this.getNeighbors(position);
@@ -204,7 +196,7 @@ class Board extends Component<MyProps, MyState> {
         }
     }
 
-    getNeighbors = (position: any) => {
+    getNeighbors(position: Position): Position[] {
         const column = position.column;
         const row = position.row;
 
@@ -212,7 +204,7 @@ class Board extends Component<MyProps, MyState> {
         const colOver = column+1;
         const rowDown = row+1;
         const rowUp = row-1;
-        const neighbors = [
+        const neighbors :Position[] = [
             {row:rowUp,column:column}
             ,{row:rowDown,column:column}
             ,{row:row,column:colOver}

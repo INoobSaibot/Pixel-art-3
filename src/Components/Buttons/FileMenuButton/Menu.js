@@ -5,7 +5,7 @@ import './menu.css';
 class Menu extends Component {
     constructor(props) {
       super(props);
-      
+
       this.state = {
         fileMenuOpen:true,
         showFiles:false,
@@ -15,7 +15,7 @@ class Menu extends Component {
       this.options = ['new','open','save','save as','delete'];
       this.node = undefined;
     }
-    
+
     render() {
         const options = <this.renderMenu options={this.options} handleClick={this.handleClick}/>;
         const fileList = <this.renderMenu options={this.getFileList()} handleClick={this.handleClick} classList={'file'}/>;

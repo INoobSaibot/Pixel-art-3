@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './canvas.css'
+import './canvas.css';
 
 class Canvas extends Component {
     constructor(props) {
@@ -47,8 +47,8 @@ class Canvas extends Component {
                     this.drawOnCanvas(ctx, row_number, column_number)
                 }
                 column_number++;
-            })
-        })
+            });
+        });
     }
 
     clearCanvas(canvas) {
@@ -59,7 +59,7 @@ class Canvas extends Component {
     drawOnCanvas(ctx, row, column) {
         let width = 10;
         let height = 10;
-        let x_start = width * column; 
+        let x_start = width * column;
         let y_start = height * row;
         ctx.fillRect(x_start, y_start, width, height);
     }

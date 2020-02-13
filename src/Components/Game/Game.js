@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import './game.css';
-import Board from '../Board/Board';
-import illuminatiGraphic from '../../assets/illum.png'
-import illuminatiSVG from '../../assets/noun_illuminati_142795.svg'
-import bubbleSound from '../../assets/zapsplat_cartoon_bubbles_001_26516.mp3'
-import illumSong from '../../assets/The X Files theme.mp3'
 import boom from '../../assets/Explosion 2-SoundBible.com-1641389556.mp3';
-import FileMenuButton from '../Buttons/FileMenuButton/FileMenuButton.js'
-import Pallette from '../../Components/Pallette/pallette'
-import { EventEmitter } from '../../EventEmitter/events'
+import illuminatiGraphic from '../../assets/illum.png';
+import illuminatiSVG from '../../assets/noun_illuminati_142795.svg';
+import illumSong from '../../assets/The X Files theme.mp3';
+import bubbleSound from '../../assets/zapsplat_cartoon_bubbles_001_26516.mp3';
+import Pallette from '../../Components/Pallette/pallette';
+import { EventEmitter } from '../../EventEmitter/events';
+import Board from '../Board/Board';
+import FileMenuButton from '../Buttons/FileMenuButton/FileMenuButton.js';
+import './game.css';
 
 
 
@@ -38,7 +38,7 @@ class Game extends Component {
     componentDidMount() {
       EventEmitter.subscribe('art-switched', this.changeCurrentArt);
     }
-    
+
     render() {
       let eraser = <this.EraseButton handleClick={this.selectEraser} value={'eraser'} selected={this.state.eraserSelected} />;
       let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected} paintColor={this.state.paintColor}/>;
@@ -52,8 +52,8 @@ class Game extends Component {
         <Pallette colors={this.colors} handleClick={this.handleClick}></Pallette>
           <div className="game-board">
             <div className="">
-            <div className="column"> 
-            <Board color={this.state.paintColor} eraser={this.state.eraserSelected} 
+            <div className="column">
+            <Board color={this.state.paintColor} eraser={this.state.eraserSelected}
                 fillButton={this.state.fillButtonSelected} gameState={this.state}
                 currentlyOpenArt={this.state.currentlySelectedArt}
                 playPaintFillSound={this.playPaintFillSound} />
@@ -87,23 +87,23 @@ class Game extends Component {
     new = (e) => {
       EventEmitter.dispatch('newArtClicked', e);
     }
-    
+
     saveClicked = (saveOrSaveAs) => {
       console.log(saveOrSaveAs)
         EventEmitter.dispatch('saveClicked', saveOrSaveAs)
     }
-    
+
     SaveButton(props) {
         let style= {height:'50px'};
         let iconStyle = {fontSize:'44px'};
-  
+
         return (
           <button className='btn row toolButton' style={style} onClick={props.handleClick} value={props.value}>
             <i className="fa fa-save" style={iconStyle}></i>Save
           </button>
         )
       }
-    
+
     selectEraser = () => {
       // todo: refactor this, if eraser not being used already, set fill button/ turn off fill button bucket, before activiating eraser
       if (!this.state.eraserSelected) {this.setState({fillButtonSelected:false})};
@@ -172,7 +172,7 @@ class Game extends Component {
         if (props.clearCountDown) {
           iconClasses += " expandingIcon";
         }
-        
+
         return (
         <button className='btn btn-default row toolButton' style={style} onClick={this.clearClick} value={props.value}>
           <i className={iconClasses} style={iconStyle}></i>
@@ -192,9 +192,9 @@ class Game extends Component {
         this.boom.play();
         this.setState({clearCountDown:false})
       },1000)
-        
+
     }
-    
+
     playPaintFillSound = () => {
       this.paintingSound.play();
     }

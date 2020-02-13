@@ -43,7 +43,7 @@ describe('undo service', () => {
 
         expect(undoService.forward()).toEqual('state-2');
         expect(undoService.forward()).toEqual('state-3');
-        
+
         expect(undoService.forward()).toEqual(undefined);
         expect(undoService.forward()).toEqual(undefined);
         expect(undoService.forward()).toEqual(undefined);

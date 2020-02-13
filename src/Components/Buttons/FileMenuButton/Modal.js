@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import './fileMenuButton.css';
 
-
-
 class Modal extends Component {
     constructor(props) {
       super(props);
-      
+
       this.state = {
         foo:true,
       }
@@ -18,7 +16,7 @@ class Modal extends Component {
             <div id="myModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                <p>Some text in the Modal..</p> 
+                <p>Some text in the Modal..</p>
                 </div>
             </div>
         )
@@ -35,14 +33,14 @@ class Modal extends Component {
           arr.push(localStorage.key(i));
         }
       }
-    
+
     RenderArtList = (props) => {
         const arts = this.getArtList();
-        
+
         const entries = arts.map( (entry) => {
           return <this.ArtListItem item={entry} key={entry}/>;
-          
-        })
+
+        });
         return entries
     }
 
@@ -52,8 +50,5 @@ class Modal extends Component {
     }
 
 }
-    
-
-
 
 export default Modal;

@@ -5,12 +5,12 @@ import './openButton.css';
 class OpenButton extends Component {
     constructor(props) {
       super(props);
-      
+
       this.state = {
           foo:false,
       }
     }
-    
+
     render() {
         let style= {height:'50px'};
         let iconStyle = {fontSize:'44px'};
@@ -45,13 +45,13 @@ class OpenButton extends Component {
           arr.push(localStorage.key(i));
         }
       }
-    
+
     RenderArtList = (props) => {
         const arts = this.getArtList();
-        
+
         const entries = arts.map( (entry) => {
           return <this.ArtListItem item={entry} key={entry}/>;
-          
+
         })
         return entries
     }
