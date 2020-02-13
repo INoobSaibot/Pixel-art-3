@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { EventEmitter } from '../../../EventEmitter/events';
 import './menu.css';
 
 
@@ -19,7 +20,7 @@ class Menu extends Component {
     render() {
         const options = <this.renderMenu options={this.options} handleClick={this.handleClick}/>;
         const fileList = <this.renderMenu options={this.getFileList()} handleClick={this.handleClick} classList={'file'}/>;
-        const deleteFiles = <this.renderMenu options={this.getdeleteList()} handleClick={this.handleClick} classList={'deleteFile'}/>;
+        const deleteFiles = <this.renderMenu options={this.getFileList()} handleClick={this.handleClick} classList={'deleteFile'}/>;
         const back = <span id='menu-back' className="back" onClick={this.clickBack}>&lt;<span className="backText">-back</span></span>
 
         return (
@@ -45,7 +46,6 @@ class Menu extends Component {
         // the click is inside, chill
         return;
       }
-      
       // the click is outside, do something
       this.handleClickOutside();
     }
@@ -60,7 +60,7 @@ class Menu extends Component {
       let selectedOption = element.getAttribute('name');
 
       if (selectedOption === 'new') {
-        this.props.new();
+        this.newClicked(e);
       }
       else if (selectedOption === 'open') {
         this.handleOpenClick(e);
@@ -82,15 +82,20 @@ class Menu extends Component {
         this.handleDeleteFile(selectedOption);
         // same as this.setState({state:this.state})
         // proper way was failing for some reason, messing up
-        // delete menu, and crashing or not rerendering (delted items visible till rerender)
-        this.forceUpdate(); 
+        // delete menu, and crashing or not rerendering (deleted items visible till rerender)
+        this.forceUpdate();
       }
+  }
+
+  newClicked =(e) => {
+    EventEmitter.dispatch('newArtClicked', e);
+    this.handleClickOutside();
   }
 
   clickBack =(e)=> {
     this.setState({showFiles:false,showDeleteList:false, fileMenuOpen:true});
   }
-    
+
   renderMenu = (props) => {
       const menu = props.options.map( (entry) => {
         return <this.menuOption item={entry} key={entry} classList={props.classList}></this.menuOption>;
@@ -110,11 +115,6 @@ class Menu extends Component {
       this.forEachKey(arts);
       return arts;
     }
-    getdeleteList() {
-      let arts = [];
-      this.forEachKey(arts)
-      return arts;
-    }
 
     handleOpenFile(key) {
       this.props.selectArtKey(key);
@@ -122,13 +122,12 @@ class Menu extends Component {
 
     handleDeleteFile(key) {
       window.localStorage.removeItem(key);
-
     }
 
     handleOpenClick(e) {
       this.setState({showFiles:true, fileMenuOpen:false});
     }
-    
+
     showDeleteList() {
       this.setState({showDeleteList:true, fileList:false, fileMenuOpen:false})
     }

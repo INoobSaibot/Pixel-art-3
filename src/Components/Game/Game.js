@@ -44,7 +44,7 @@ class Game extends Component {
       let fillButton = <this.FillButton handleClick={this.selectFillButton} selected={this.state.fillButtonSelected} paintColor={this.state.paintColor}/>;
       let clearButton = <this.ClearButton clearCountDown={this.state.clearCountDown} />;
       let illuminati = <this.IlluminatiButton handleClick={this.illuminatiClicked} selected={this.state.illuminatiPlaying} audio={this.audio}/>;
-      let fileMenuButton = <FileMenuButton selectArtKey={this.selectArtKey} handleSave={this.saveClicked} new={this.new}/>;
+      let fileMenuButton = <FileMenuButton selectArtKey={this.selectArtKey} handleSave={this.saveClicked} />;
 
       return (
         <div className="game">
@@ -84,12 +84,7 @@ class Game extends Component {
       this.handleItemClicked();
     }
 
-    new = (e) => {
-      EventEmitter.dispatch('newArtClicked', e);
-    }
-
     saveClicked = (saveOrSaveAs) => {
-      console.log(saveOrSaveAs)
         EventEmitter.dispatch('saveClicked', saveOrSaveAs)
     }
 

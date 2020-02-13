@@ -61,7 +61,6 @@ class Board extends Component<MyProps, MyState> {
         this.mousedown = false;
     }
 
-
     onMouseOver = (e: any) => {
         if(!this.mousedown) return;
 
@@ -79,13 +78,6 @@ class Board extends Component<MyProps, MyState> {
     }
 
     render() {
-        ///
-        const exportCanvas = <Canvas pixelData={this.state.pixelData} artName={this.props.currentlyOpenArt} board={this.props.board}></Canvas>;
-        // let exportCanvas = <span></span>;
-        // if (this.props.renderCanvas === true) {
-        //     exportCanvas = canvas;
-        // }
-        ///
         let columns = 14;
         const widthCheckLimits = 768; // px wide
         const width = document.documentElement.clientWidth;
@@ -94,7 +86,7 @@ class Board extends Component<MyProps, MyState> {
         }
         const gridAndState = this.loopyRenderRow(30, columns);
         const grid = gridAndState.grid;
-
+        const exportCanvas = <Canvas pixelData={this.state.pixelData} artName={this.props.currentlyOpenArt} board={this.props.board}></Canvas>;
         const undoButton = <button id='undoId' className='undoButton' data-testid='undo' onClick={this.undoClicked}>undo</button>
         const redoButton = <button id='redoId' className='redoButton' data-testid='redo' onClick={this.redoClicked}>redo</button>
 
@@ -130,7 +122,8 @@ class Board extends Component<MyProps, MyState> {
 
     new = () => {
         this.clearBoard();
-        EventEmitter.dispatch('art-switched', undefined)
+        let newArtName :string = this.persistance.generateNewFileName();
+        EventEmitter.dispatch('art-switched', newArtName)
     }
 
     openArt(artName: string){

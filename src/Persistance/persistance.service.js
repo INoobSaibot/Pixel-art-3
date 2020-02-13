@@ -33,10 +33,23 @@ class PersistanceService {
     }
 
     generateNewFileName() {
-        // todo
-        // check in loop untitle-Number i loop, until first one in in set/ is available
-        // faked for now
+        const prefix = 'untitled-';
+        for (let i = 1; i < 100; i++) {
+            let attemptingName = prefix+i;
+            if (!this.isThereOnNamed(attemptingName)){
+                return attemptingName;
+            }
+        }
         return 'untitled-n'
+    }
+
+    isThereOnNamed(name) {
+        let artWithName = window.localStorage.getItem(name);
+        if(artWithName) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     openArt = (key) => {
