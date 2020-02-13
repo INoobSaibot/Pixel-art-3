@@ -22,7 +22,7 @@ interface MyState {
   }
 
 class Board extends Component<MyProps, MyState> {
-    constructor(props:any) { 
+    constructor(props:any) {
       super(props);
       this.state = {
           pixelData :[],
@@ -32,22 +32,58 @@ class Board extends Component<MyProps, MyState> {
 
     persistance = new PersistanceService();
     undoService = new UndoService();
-    
+    mousedown: Boolean = false;
+
     componentDidMount() {
         let gridData = this.loopyRenderRow(30,30).state;
         this.setState({pixelData:gridData});
-        
+
         EventEmitter.subscribe('clearBoardClicked', (event: any) => this.clearBoard());
         EventEmitter.subscribe('saveClicked', (event: any) => this.saveArt(event));
         EventEmitter.subscribe('openArtClicked', (art: any)=> this.openArt(art));
         EventEmitter.subscribe('newArtClicked', () => this.new());
-        
+
         window.addEventListener('resize', this.displayWindowResize);
+
+        // drag
+        //window.addEventListener('mousedown', this.touchMove);
+        window.addEventListener('resize', this.displayWindowResize);
+        window.addEventListener('resize', this.displayWindowResize);
+        // end
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.displayWindowResize);
 
+    }
+
+    onmousedown = ($event: any) => {
+        this.mousedown = true
+    }
+
+    onMouseUp = () => {
+        this.mousedown = false;
+    }
+
+    getPosition = (pixelElement: HTMLElement) => {
+        let rowAndColumn = pixelElement.getAttribute('id').split("__");
+
+        let row = rowAndColumn[0].replace('row_', '');
+        let column = rowAndColumn[1].replace('col_', '');
+        let position = {row:row,column:column};
+
+        return position
+    }
+
+    onMouseOver = (e: any) => {
+        if(!this.mousedown) return;
+
+        let el: HTMLButtonElement = e.target;
+        let pixelPosition = this.getPosition(el);
+
+        if(this.mousedown) {
+            this.paintPixel(pixelPosition);
+        }
     }
 
     displayWindowResize = ($event: any) => {
@@ -72,14 +108,13 @@ class Board extends Component<MyProps, MyState> {
         const undoButton = <button id='undoId' className='undoButton' data-testid='undo' onClick={this.undoClicked}>undo</button>
         const redoButton = <button id='redoId' className='redoButton' data-testid='redo' onClick={this.redoClicked}>redo</button>
 
-        
         return (
             <div>
             <div id='art-name-container'>Name:<span id='art-name'> {this.props.currentlyOpenArt}</span></div>
                 {undoButton} {redoButton}
                 <div>
                     {exportCanvas_or_emptySpanForTestingIssue}
-                    <div className='grid'>{grid}</div>
+                    <div className='grid' onMouseUp={this.onMouseUp}onMouseDown={this.onmousedown} >{grid}</div>
                 </div>
             </div>
         );
@@ -112,29 +147,32 @@ class Board extends Component<MyProps, MyState> {
         this.setState(this.persistance.openArt(artName))
     }
 
-    handleClick = (e: any) =>{
-        this.props.playPaintFillSound();
+    handleClick = (e: any) => {
         let pixelData = this.state.pixelData;
         let clickedPixel = e.target;
         let rowAndColumn = clickedPixel.getAttribute('id').split("__");
 
-        let row = rowAndColumn[0].replace('row_', '');
-        let column = rowAndColumn[1].replace('col_', '');
+        let row: number = parseInt(rowAndColumn[0].replace('row_', ''));
+        let column: number = parseInt(rowAndColumn[1].replace('col_', ''));
         let position = {row:row,column:column};
 
-        let eraserSelected = this.props.eraser;
-        
         if (this.props.fillButton) {
             const targetsColor = pixelData[row][column];
             this.paintFill(position,targetsColor);
+      } else {
+        this.paintPixel(position)
       }
-      else {
+    }
+
+    paintPixel = (position:any) => {
+        let eraserSelected = this.props.eraser;
         let color = !eraserSelected ? this.props.color : ''; //paint or eraser
-        pixelData[row][column] = color;
+        let pixelData = this.state.pixelData;
+        pixelData[position.row][position.column] = color;
 
         this.storePreviousStateForUndo(this.state);
         this.setState({pixelData:pixelData});
-      }
+        this.props.playPaintFillSound();
     }
 
     storePreviousStateForUndo(state: any) {
@@ -152,11 +190,11 @@ class Board extends Component<MyProps, MyState> {
         if (color === matchColor) {return;}
 
         if (neighbors.length > 0) {
-            
+
             // TODO: refactor, hardcoded row col limits ets.
             let sanitizedNeighbors = neighbors.filter(pos => (pos.row >= 0 && pos.row <= 29 && pos.column >=0 && pos.column <= 29));
             let matches = sanitizedNeighbors.filter(pos => pixelData[pos.row][pos.column] === matchColor);
-            
+
             matches.forEach(function(position) {
                 pixelData[position.row][position.column] = color;
             });
@@ -169,7 +207,7 @@ class Board extends Component<MyProps, MyState> {
     getNeighbors = (position: any) => {
         const column = position.column;
         const row = position.row;
-        
+
         const colBack = column-1;
         const colOver = column+1;
         const rowDown = row+1;
@@ -196,12 +234,13 @@ class Board extends Component<MyProps, MyState> {
 
     loopyRenderRow(r: number,c: number){
         //also used to popular pixelData array to all empty value 2d array grid,
-        // will refactro, for 2 methods, with a common paramed method
+        // will refactor, for 2 methods, with a common paramed method
         let pixelArrayHasInitialPopulationComplete = this.state.pixelData[r-1];
         let handleClick = this.handleClick
+        let onMouseOver = this.onMouseOver;
 
         const pixelWidth = properlySizePixelButtons(c)
-        
+
         let grid = []
         let gridState = [];
 
@@ -212,13 +251,13 @@ class Board extends Component<MyProps, MyState> {
         for (let j = 0; j < c; j++) {
             let value = `row_${i}:column_${j}`;
             let background;
-            
+
             if (pixelArrayHasInitialPopulationComplete) {
                 background = this.state.pixelData[i][j];
             }
 
             children.push(<Square background={background} row={i} column={j} pixelWidth={pixelWidth}
-                value={value} handleClick={handleClick} key={i.toString() + "X" + j.toString()} />)
+                value={value} handleClick={handleClick} onMouseOver={onMouseOver}key={i.toString() + "X" + j.toString()} />)
 
             childState.push('');
         }
@@ -231,14 +270,15 @@ class Board extends Component<MyProps, MyState> {
     }
   }
 
-  export function Square(props: any) {    
+  export function Square(props: any) {
     let id = generateID(props.row, props.column);
     const pixelWidth = props.pixelWidth;
     const pixelHeight = pixelWidth;
     return (
-          <button id={id} data-testid={id} className="square" data-row={props.row} data-column={props.column} value={props.value} onClick={props.handleClick} style={{background:props.background, width:pixelWidth, height:pixelHeight}}></button>
+          <button id={id} data-testid={id} className="square" onMouseOver={props.onMouseOver} data-row={props.row} data-column={props.column} value={props.value} onClick={props.handleClick} style={{background:props.background, width:pixelWidth, height:pixelHeight}}></button>
         )
     }
+
 
     function generateID(row: number, column: number){
         let id = 'row_'+row.toString() + '__' + 'col_'+ column.toString();
@@ -247,8 +287,7 @@ class Board extends Component<MyProps, MyState> {
 
     function properlySizePixelButtons(numberOfColumns: number) {
         const width = document.documentElement.clientWidth;
-        const calculatedPixelWidth = Math.floor(width / numberOfColumns);        
-        
+        const calculatedPixelWidth = Math.floor(width / numberOfColumns);
         return calculatedPixelWidth;
     }
 
