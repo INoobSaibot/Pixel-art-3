@@ -1,5 +1,5 @@
 
 export  interface Position {
-      row: number
+      row: number,
       column: number
   }

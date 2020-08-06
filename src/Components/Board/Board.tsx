@@ -19,8 +19,9 @@ interface MyProps {
   }
 
 interface MyState {
-    pixelData: any
-    windowWidth: number
+    pixelData: any,
+    windowWidth: number,
+    record_id:number
   }
 
 class Board extends Component<MyProps, MyState> {
@@ -28,7 +29,8 @@ class Board extends Component<MyProps, MyState> {
       super(props);
       this.state = {
           pixelData :[],
-          windowWidth: 0
+          windowWidth: 0,
+          record_id:undefined
       }
     }
 
@@ -123,11 +125,16 @@ class Board extends Component<MyProps, MyState> {
     new = () => {
         this.clearBoard();
         let newArtName :string = this.persistance.generateNewFileName();
+        this.setState({record_id:undefined});
         EventEmitter.dispatch('art-switched', newArtName)
     }
 
     openArt(artName: string){
-        this.setState(this.persistance.openArt(artName))
+        this.persistance.openArt(artName).then((art)=>{
+            this.setState({pixelData: art.content})
+            this.setState({record_id:art.id})
+            EventEmitter.dispatch('art-loaded', art.title)
+        })
     }
 
     handleClick = (e: any) => {
@@ -214,7 +221,9 @@ class Board extends Component<MyProps, MyState> {
     }
 
     saveArt = (saveOrSaveAs: any) => {
-        this.persistance.save(this, saveOrSaveAs)
+        this.persistance.save(this, saveOrSaveAs).then((id)=>{
+            this.setState({record_id:id})
+        })
     }
 
     loopyRenderRow(r: number,c: number){
